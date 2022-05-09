@@ -25,7 +25,7 @@ Compare：
 msbuild /p:platform=win32 /p:Configuration=Release
 ```
 
-Just run: `keycastow.exe`（Windows）
+Just run:  [keycastow.exe](keycastow.exe)  （on Windows）
 
 ## License
 
