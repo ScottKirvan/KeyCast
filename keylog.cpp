@@ -286,6 +286,7 @@ void cleanModifier(UINT vk, LPWSTR modifierkeys) {
     }
 }
 
+#include "MyStaticVar.h"
 static WCHAR modifierkey[64] = L"\0";
 static BOOL modifierUsed = FALSE;
 LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
@@ -307,6 +308,12 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
     DWORD dwThread = ::GetWindowThreadProcessId(Gti.hwndActive, 0);
     HKL hklLayout = ::GetKeyboardLayout(dwThread);
     UINT isDeadKey = ((MapVirtualKeyEx(k.vkCode, MAPVK_VK_TO_CHAR, hklLayout) & 0x80000000) >> 31);
+
+    if (!isDeadKey)
+    {
+        MyStaticVar::otherOperation();
+    }
+
     if(isDeadKey) {
         // GetKeyboardState(btKeyState);
         // for(int i = 0; i < 256; i++) {
@@ -392,11 +399,33 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
         positionOrigin(idx, ms->pt);
     } else if ((mouseCapturing || mouseCapturingMod) && idx > 0 && idx < nMouseActions && nCode == HC_ACTION) {
         MSLLHOOKSTRUCT* ms = reinterpret_cast<MSLLHOOKSTRUCT*>(lp);
+        
+        bool skip = false;
 
         if (!(ms->flags & LLMHF_INJECTED)) {
-            if(idx == 10) {
-                swprintf(c, 64, (int)(ms->mouseData) > 0 ? L"%sUp" : L"%sDown", mouseActions[idx]);
-            } else if(mergeMouseActions) {
+            if (idx != 10)
+            {
+                MyStaticVar::otherOperation();
+            }
+            if(idx == 10) 
+            {
+                if ((int)(ms->mouseData) > 0)
+                {
+                    if (MyStaticVar::skipMouseWheelUp()) 
+                        skip = TRUE;
+                    else
+                     swprintf(c, 64, L"%sUp", mouseActions[idx]);
+                }
+                else
+                {
+                    if (MyStaticVar::skipMouseWheelDown())
+                        skip = TRUE;
+                    else
+                        swprintf(c, 64, L"%sDown", mouseActions[idx]);
+                }
+                
+            } 
+            else if(mergeMouseActions) {
                 switch (idx) {
                     case 1:
                     case 4:
@@ -441,29 +470,36 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
                         mouseButtonDown = 0;
                         break;
                 }
-            } else {
+            } 
+            else {
                 swprintf(c, 64, mouseActions[idx]);
                 if (idx == 1 || idx == 4 || idx == 7) {
                     holdButton = TRUE;
                 }
             }
 
-            if(modifierkey[0] != '\0') {
-                modifierUsed = TRUE;
-                swprintf(tmp, 64, L"%s %c %s", modifierkey, comboChars[1], c);
-                addBracket(tmp);
-                showText(tmp, behavior);
-            } else if(GetKeyState(VK_SHIFT) < 0) {
-                swprintf(tmp, 64, L"Shift %c %s", comboChars[1], c);
-                addBracket(tmp);
-                showText(tmp, behavior);
-            } else if(!mouseCapturingMod) {
-                swprintf(tmp, 64, L"%s", c);
-                addBracket(tmp);
-                showText(tmp, behavior);
-            }
+            if (!skip)
+            {
+                if (modifierkey[0] != '\0') {
+                    modifierUsed = TRUE;
+                    swprintf(tmp, 64, L"%s %c %s", modifierkey, comboChars[1], c);
+                    addBracket(tmp);
+                    showText(tmp, behavior);
+                }
+                else if (GetKeyState(VK_SHIFT) < 0) {
+                    swprintf(tmp, 64, L"Shift %c %s", comboChars[1], c);
+                    addBracket(tmp);
+                    showText(tmp, behavior);
+                }
+                else if (!mouseCapturingMod) {
+                    swprintf(tmp, 64, L"%s", c);
+                    addBracket(tmp);
+                    showText(tmp, behavior);
+                }
 
-            fadeLastLabel(!holdButton);
+                fadeLastLabel(!holdButton);
+            }
+            
         }
     }
     return CallNextHookEx(moshook, nCode, wp, lp);
