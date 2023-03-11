@@ -1,3 +1,13 @@
-Debug
-out
-*.o
+# Build Artifacts
+Debug/
+
+# VS project artifacts
+.vs/
+*.user
+*.aps
+
+# vscode artifacts
+*.code-workspace
+
+# obsidian config
+.obsidian/*
