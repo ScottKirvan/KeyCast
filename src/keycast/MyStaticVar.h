@@ -7,7 +7,8 @@ namespace MyStaticVar
 
 	bool skipMouseWheelUp()
 	{
-		if (keepMouseWheelUp) return true;
+		if (keepMouseWheelUp)
+			return true;
 		keepMouseWheelUp = true;
 		keepMouseWheelDown = false;
 		return false;
@@ -15,7 +16,8 @@ namespace MyStaticVar
 
 	bool skipMouseWheelDown()
 	{
-		if (keepMouseWheelDown) return true;
+		if (keepMouseWheelDown)
+			return true;
 		keepMouseWheelUp = false;
 		keepMouseWheelDown = true;
 		return false;
@@ -27,4 +29,4 @@ namespace MyStaticVar
 		keepMouseWheelDown = false;
 	}
 
-};
+}; // namespace MyStaticVar
