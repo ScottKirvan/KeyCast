@@ -19,22 +19,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="keycast.cpp" />
-    <ClCompile Include="keylog.cpp" />
-    <ClCompile Include="MyStaticVar.cpp" />
+    <ClCompile Include="src\keycast\keycast.cpp" />
+    <ClCompile Include="src\keycast\keylog.cpp" />
+    <ClCompile Include="src\keycast\MyStaticVar.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MyStaticVar.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="src\keycast\keycast.h" />
+    <ClInclude Include="src\keycast\keylog.h" />
+    <ClInclude Include="src\keycast\MyStaticVar.h" />
+    <ClInclude Include="src\keycast\timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="keycastow.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="keycastow.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Manifest Include="keycastow.exe.manifest" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D9A196AF-F63D-4E8E-8724-9364FD8EB4D4}</ProjectGuid>
