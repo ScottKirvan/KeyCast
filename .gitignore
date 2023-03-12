@@ -1,5 +1,7 @@
 # Build Artifacts
 Debug/
+Release/
+x64/
 
 # VS project artifacts
 .vs/
