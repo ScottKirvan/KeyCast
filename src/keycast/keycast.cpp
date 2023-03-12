@@ -15,7 +15,7 @@
 #include <gdiplus.h>
 using namespace Gdiplus;
 
-#include "../../resource.h"
+#include "../../res/resource.h"
 #include "timer.h"
 CTimer showTimer;
 CTimer previewTimer;
