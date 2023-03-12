@@ -179,10 +179,6 @@ void showText(LPCWSTR text, int behavior = 0);
 void fadeLastLabel(BOOL weither);
 void positionOrigin(int action, POINT &pt);
 
-#ifdef _DEBUG
-#include <sstream>
-void log(const std::stringstream & line);
-#endif
 LPCWSTR GetSymbolFromVK(UINT vk, UINT sc, BOOL mod, HKL hklLayout) {
     static WCHAR symbol[32];
     BYTE btKeyState[256];
@@ -196,15 +192,6 @@ LPCWSTR GetSymbolFromVK(UINT vk, UINT sc, BOOL mod, HKL hklLayout) {
         }
     }
     int rr = ToUnicodeEx(vk, sc, btKeyState, cc, 2, 0, hklLayout);
-#ifdef _DEBUG
-    WCHAR ss[KL_NAMELENGTH];
-    GetKeyboardLayoutName(ss);
-    std::wstring wide(ss);
-    std::string str( wide.begin(), wide.end() );
-    std::stringstream line;
-    line << vk << ":" << rr << ":" << sc << "\n";
-    // log(line);
-#endif
     if(rr > 0) {
         if(!visibleShift && mod && GetKeyState(VK_SHIFT) < 0) {
             // prefix "Shift - " only when Ctrl or Alt is hold (mod as TRUE)

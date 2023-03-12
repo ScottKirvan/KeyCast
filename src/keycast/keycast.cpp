@@ -96,51 +96,6 @@ Font * fontPlus = NULL;
 
 void showText(LPCWSTR text, int behavior);
 
-#ifdef _DEBUG
-WCHAR capFile[MAX_PATH];
-FILE *capStream = NULL;
-WCHAR recordFN[MAX_PATH];
-int replayStatus = 0;
-#define MENU_REPLAY    35
-struct Displayed {
-    DWORD tm;
-    int behavior;
-    size_t len;
-    Displayed(DWORD t, int b, size_t l) {
-        tm = t;
-        behavior = b;
-        len = l;
-    }
-};
-DWORD WINAPI replay(LPVOID ptr)
-{
-    replayStatus = 1;
-    FILE *stream;
-    WCHAR tmp[256];
-    errno_t err = _wfopen_s(&stream, (LPCWSTR)ptr, L"rb");
-    Displayed dp(0, 0, 0);
-    fread(&dp, sizeof(Displayed), 1, stream);
-    fread(tmp, sizeof(WCHAR), dp.len, stream);
-    showText(tmp, dp.behavior);
-    DWORD lastTm = dp.tm;
-    while(replayStatus == 1 && fread(&dp, sizeof(Displayed), 1, stream) == 1) {
-        Sleep(dp.tm - lastTm);
-        lastTm = dp.tm;
-        fread(tmp, sizeof(WCHAR), dp.len, stream);
-        tmp[dp.len] = '\0';
-        showText(tmp, dp.behavior);
-    }
-    fclose(stream);
-    replayStatus = 0;
-    return 0;
-}
-#include <sstream>
-WCHAR logFile[MAX_PATH];
-FILE *logStream;
-void log(const std::stringstream & line) {
-    fprintf(logStream,"%s",line.str().c_str());
-}
-#endif
 void stamp(HWND hwnd, LPCWSTR text) {
     RECT rt;
     GetWindowRect(hwnd,&rt);
@@ -329,15 +284,6 @@ void showText(LPCWSTR text, int behavior = 0) {
     SetWindowPos(hMainWnd,HWND_TOPMOST,0,0,0,0,SWP_NOSIZE|SWP_NOMOVE|SWP_NOACTIVATE);
     size_t newLen = wcslen(text);
 
-#ifdef _DEBUG
-    if(replayStatus == 0 && capStream) {
-        Displayed dp(GetTickCount(), behavior, newLen);
-        fwrite(&dp, sizeof(Displayed), 1, capStream);
-        fwrite(text, sizeof(WCHAR), newLen, capStream);
-        fflush(capStream);
-    }
-#endif
-
     DWORD i;
     if (behavior == 2) {
         wcscpy_s(keyLabels[labelCount-1].text, textBufferEnd-keyLabels[labelCount-1].text, text);
@@ -398,16 +344,8 @@ void updateCanvasSize(const POINT &pt) {
     canvasOrigin.y = pt.y - desktopRect.bottom + desktopRect.top;
     canvasSize.cx = pt.x - desktopRect.left;
     canvasOrigin.x = desktopRect.left;
-
-#ifdef _DEBUG
-    std::stringstream line;
-    line << "desktopRect: {left: " << desktopRect.left << ", top: " <<  desktopRect.top << ", right: " <<  desktopRect.right << ", bottom: " <<  desktopRect.bottom << "};\n";
-    line << "canvasSize: {" << canvasSize.cx << "," <<  canvasSize.cy << "};\n";
-    line << "canvasOrigin: {" << canvasOrigin.x << "," <<  canvasOrigin.y << "};\n";
-    line << "pt: {" << pt.x << "," <<  pt.y << "};\n";
-    log(line);
-#endif
 }
+
 void createCanvas() {
     HDC hdc = GetDC(hMainWnd);
     HDC hdcBuffer = CreateCompatibleDC(hdc);
@@ -483,15 +421,6 @@ void positionOrigin(int action, POINT &pt) {
             createCanvas();
             prepareLabels();
         }
-#ifdef _DEBUG
-        std::stringstream line;
-        line << "rcWork: {" << mi.rcWork.left << "," <<  mi.rcWork.top << "," <<  mi.rcWork.right << "," <<  mi.rcWork.bottom << "};\n";
-        line << "desktopRect: {" << desktopRect.left << "," <<  desktopRect.top << "," <<  desktopRect.right << "," <<  desktopRect.bottom << "};\n";
-        line << "canvasSize: {" << canvasSize.cx << "," <<  canvasSize.cy << "};\n";
-        line << "canvasOrigin: {" << canvasOrigin.x << "," <<  canvasOrigin.y << "};\n";
-        line << "labelCount: " << labelCount << "\n";
-        log(line);
-#endif
         WCHAR tmp[256];
         swprintf(tmp, 256, L"%d, %d", pt.x, pt.y);
         showText(tmp, 2);
@@ -1001,9 +930,6 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
                 hPopMenu = CreatePopupMenu();
                 AppendMenu( hPopMenu, MF_STRING, MENU_CONFIG,  L"&Settings..." );
                 AppendMenu( hPopMenu, MF_STRING, MENU_RESTORE,  L"&Restore default settings" );
-#ifdef _DEBUG
-                AppendMenu( hPopMenu, MF_STRING, MENU_REPLAY,  L"Re&play" );
-#endif
                 AppendMenu( hPopMenu, MF_STRING, MENU_EXIT,    L"E&xit" );
                 SetMenuDefaultItem( hPopMenu, MENU_CONFIG, FALSE );
             }
@@ -1044,30 +970,6 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
                         createCanvas();
                         prepareLabels();
                         break;
-#ifdef _DEBUG
-                    case MENU_REPLAY:
-                        {
-                            if(replayStatus == 1) {
-                                replayStatus = 2;
-                                ModifyMenu( hPopMenu, MENU_REPLAY, MF_STRING, MENU_REPLAY, L"Re&play");
-                            } else {
-                                OPENFILENAME ofn;
-                                ZeroMemory(&ofn, sizeof(OPENFILENAME));
-                                ofn.lStructSize = sizeof(ofn);
-                                ofn.hwndOwner   = NULL;
-                                ofn.hInstance   = hInstance;
-                                ofn.lpstrFile   = recordFN;
-                                ofn.nMaxFile    = sizeof(recordFN);
-                                ofn.Flags = OFN_FILEMUSTEXIST | OFN_HIDEREADONLY | OFN_PATHMUSTEXIST;
-                                if(GetOpenFileName(&ofn)) {
-                                    unsigned long id = 1;
-                                    CreateThread(NULL,0,replay,recordFN,0,&id);
-                                    ModifyMenu( hPopMenu, MENU_REPLAY, MF_STRING, MENU_REPLAY, L"Stop re&play");
-                                }
-                            }
-                        }
-                        break;
-#endif
                     case MENU_EXIT:
                         Shell_NotifyIcon( NIM_DELETE, &nid );
                         ExitProcess(0);
@@ -1191,17 +1093,6 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
     GetModuleFileName(NULL, iniFile, MAX_PATH);
     iniFile[wcslen(iniFile)-4] = '\0';
     wcscat_s(iniFile, MAX_PATH, L".ini");
-#ifdef _DEBUG
-    wcscpy_s(capFile, MAX_PATH, iniFile);
-    capFile[wcslen(capFile)-4] = '\0';
-    wcscat_s(capFile, MAX_PATH, L".cap");
-
-    wcscpy_s(logFile, MAX_PATH, iniFile);
-    logFile[wcslen(logFile)-4] = '\0';
-    wcscat_s(logFile, MAX_PATH, L".txt");
-    errno_t err = _wfopen_s(&capStream, capFile, L"wb");
-    err = _wfopen_s(&logStream, logFile, L"a");
-#endif
 
     GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR           gdiplusToken;
@@ -1286,10 +1177,6 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
     UnregisterHotKey(NULL, 1);
     delete gCanvas;
     delete fontPlus;
-#ifdef _DEBUG
-    fclose(capStream);
-    fclose(logStream);
-#endif
 
     GdiplusShutdown(gdiplusToken);
     return msg.wParam;
