@@ -13,6 +13,7 @@ src/keycast/vc140.pdb
 # vscode artifacts and proj files
 *.code-workspace
 .vscode/tasks.json
+.clang-format
 
 # obsidian config
 .obsidian/*
