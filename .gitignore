@@ -8,8 +8,13 @@ x64/
 *.user
 *.aps
 
-# vscode artifacts
+
+# vscode artifacts and proj files
 *.code-workspace
+.vscode/tasks.json
 
 # obsidian config
 .obsidian/*
+
+
+
