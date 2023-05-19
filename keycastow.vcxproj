@@ -21,7 +21,6 @@
   <ItemGroup>
     <ClCompile Include="src\keycast\keycast.cpp" />
     <ClCompile Include="src\keycast\keylog.cpp" />
-    <ClCompile Include="src\keycast\MyStaticVar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\resource.h" />
