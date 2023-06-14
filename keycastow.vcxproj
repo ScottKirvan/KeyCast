@@ -35,6 +35,9 @@
   <ItemGroup>
     <Image Include="res\keycastow.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Manifest Include="keycastow.exe.manifest" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D9A196AF-F63D-4E8E-8724-9364FD8EB4D4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
