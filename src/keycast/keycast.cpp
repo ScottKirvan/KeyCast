@@ -31,7 +31,7 @@ struct KeyLabel
 	RectF rect;
 	WCHAR *text;
 	DWORD length;
-	int time;
+	DWORD time;
 	BOOL fade;
 	KeyLabel()
 	{
@@ -116,7 +116,7 @@ void stamp(HWND hwnd, LPCWSTR text)
 	SizeF stringSize, layoutSize((REAL)desktopRect.right - desktopRect.left - 2 * labelSettings.borderSize, (REAL)desktopRect.bottom - desktopRect.top - 2 * labelSettings.borderSize);
 	StringFormat format;
 	format.SetAlignment(StringAlignmentCenter);
-	g.MeasureString(text, wcslen(text), fontPlus, layoutSize, &format, &stringSize);
+	g.MeasureString(text, (INT)wcslen(text), fontPlus, layoutSize, &format, &stringSize);
 	rc.Width = stringSize.Width;
 	rc.Height = stringSize.Height;
 	SIZE wndSize = {2 * labelSettings.borderSize + (LONG)rc.Width, 2 * labelSettings.borderSize + (LONG)rc.Height};
@@ -125,11 +125,11 @@ void stamp(HWND hwnd, LPCWSTR text)
 	SolidBrush bgBrush(Color::Color(0xaf007cfe));
 	g.FillRectangle(&bgBrush, rc);
 	SolidBrush textBrushPlus(Color(0xaf303030));
-	g.DrawString(text, wcslen(text), fontPlus, rc, &format, &textBrushPlus);
+	g.DrawString(text, (int)wcslen(text), fontPlus, rc, &format, &textBrushPlus);
 	SolidBrush brushPlus(Color::Color(0xaffefefe));
 	rc.X += 2;
 	rc.Y += 2;
-	g.DrawString(text, wcslen(text), fontPlus, rc, &format, &brushPlus);
+	g.DrawString(text, (INT)wcslen(text), fontPlus, rc, &format, &brushPlus);
 
 	POINT ptSrc = {0, 0};
 	POINT ptDst = {rt.left, rt.top};
@@ -258,7 +258,7 @@ static void startFade()
 	for (i = 0; i < labelCount; i++)
 	{
 		RectF &rt = keyLabels[i].rect;
-		if (keyLabels[i].time > labelSettings.fadeDuration)
+		if (keyLabels[i].time > (int)labelSettings.fadeDuration)
 		{
 			if (keyLabels[i].fade)
 			{
@@ -317,13 +317,13 @@ bool outOfLine(LPCWSTR text)
 void showText(LPCWSTR text, int behavior = 0)
 {
 	SetWindowPos(hMainWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
-	size_t newLen = wcslen(text);
+	DWORD newLen = (DWORD)wcslen(text);
 
 	DWORD i;
 	if (behavior == 2)
 	{
 		wcscpy_s(keyLabels[labelCount - 1].text, textBufferEnd - keyLabels[labelCount - 1].text, text);
-		keyLabels[labelCount - 1].length = newLen;
+		keyLabels[labelCount - 1].length = (DWORD)newLen;
 	}
 	else if (behavior == 3)
 	{
@@ -808,7 +808,7 @@ static void previewLabel()
 	SolidBrush brushPlus(Color::Color(BR(bgAlpha, previewLabelSettings.bgColor)));
 	drawLabelFrame(&g, &penPlus, &brushPlus, rc, (REAL)previewLabelSettings.cornerSize);
 	SolidBrush textBrushPlus(Color(BR(textAlpha, previewLabelSettings.textColor)));
-	g.DrawString(text, wcslen(text), &font, origin, &textBrushPlus);
+	g.DrawString(text, (INT)wcslen(text), &font, origin, &textBrushPlus);
 	BitBlt(hdc, rt.left, rt.top, rtWidth, rtHeight, memDC, 0, 0, SRCCOPY);
 	DeleteDC(memDC);
 	DeleteObject(memBitmap);
@@ -1304,5 +1304,5 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 	delete fontPlus;
 
 	GdiplusShutdown(gdiplusToken);
-	return msg.wParam;
+	return (int)msg.wParam;
 }
