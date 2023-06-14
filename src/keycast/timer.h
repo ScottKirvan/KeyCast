@@ -5,8 +5,8 @@ by ken.loveday
 
 v1.0 2013 ArmyOfPirates
 */
-static void CALLBACK TimerProc(void*, BOOLEAN);
-static void CALLBACK TimerProcOnce(void* param, BOOLEAN timerCalled);
+static void CALLBACK TimerProc(void *, BOOLEAN);
+static void CALLBACK TimerProcOnce(void *param, BOOLEAN timerCalled);
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -26,9 +26,9 @@ public:
 		Stop();
 	}
 
-	bool Start(unsigned int interval, // interval in ms
-		bool immediately = false,	  // true to call first event immediately
-		bool once = false)			  // true to call timed event only once
+	bool Start(unsigned int interval,	 // interval in ms
+			   bool immediately = false, // true to call first event immediately
+			   bool once = false)		 // true to call timed event only once
 	{
 		if (m_hTimer)
 		{
@@ -38,12 +38,12 @@ public:
 		SetCount(0);
 
 		BOOL success = CreateTimerQueueTimer(&m_hTimer,
-			NULL,
-			once ? TimerProcOnce : TimerProc,
-			this,
-			immediately ? 0 : interval,
-			once ? 0 : interval,
-			WT_EXECUTEINTIMERTHREAD);
+											 NULL,
+											 once ? TimerProcOnce : TimerProc,
+											 this,
+											 immediately ? 0 : interval,
+											 once ? 0 : interval,
+											 WT_EXECUTEINTIMERTHREAD);
 
 		return (success != 0);
 	}
@@ -80,16 +80,16 @@ private:
 //
 // TimerProc
 //
-static void CALLBACK TimerProc(void* param, BOOLEAN timerCalled)
+static void CALLBACK TimerProc(void *param, BOOLEAN timerCalled)
 {
-	CTimer* timer = static_cast<CTimer*>(param);
+	CTimer *timer = static_cast<CTimer *>(param);
 	timer->SetCount(timer->GetCount() + 1);
 	timer->OnTimedEvent();
 };
 
-static void CALLBACK TimerProcOnce(void* param, BOOLEAN timerCalled)
+static void CALLBACK TimerProcOnce(void *param, BOOLEAN timerCalled)
 {
-	CTimer* timer = static_cast<CTimer*>(param);
+	CTimer *timer = static_cast<CTimer *>(param);
 	timer->SetCount(timer->GetCount() + 1);
 	timer->OnTimedEvent();
 	if (timer->Enabled())
