@@ -18,6 +18,7 @@ src/keycast/vc140.pdb
 
 # obsidian config
 .obsidian/*
+*.dead
 
 
 
