@@ -29,7 +29,7 @@ LPCWSTR textBufferEnd = textBuffer + MAXCHARS;
 struct KeyLabel
 {
 	RectF rect;
-	WCHAR* text;
+	WCHAR *text;
 	DWORD length;
 	int time;
 	BOOL fade;
@@ -82,14 +82,14 @@ POINT canvasOrigin;
 #include "keycast.h"
 #include "keylog.h"
 
-WCHAR* szWinName = L"KeyCastOW";
+WCHAR *szWinName = L"KeyCastOW";
 HWND hMainWnd;
 HWND hDlgSettings;
 RECT settingsDlgRect;
 HWND hWndStamp;
 HINSTANCE hInstance;
-Graphics* gCanvas = NULL;
-Font* fontPlus = NULL;
+Graphics *gCanvas = NULL;
+Font *fontPlus = NULL;
 
 #define IDI_TRAY 100
 #define WM_TRAYMSG 101
@@ -119,7 +119,7 @@ void stamp(HWND hwnd, LPCWSTR text)
 	g.MeasureString(text, wcslen(text), fontPlus, layoutSize, &format, &stringSize);
 	rc.Width = stringSize.Width;
 	rc.Height = stringSize.Height;
-	SIZE wndSize = { 2 * labelSettings.borderSize + (LONG)rc.Width, 2 * labelSettings.borderSize + (LONG)rc.Height };
+	SIZE wndSize = {2 * labelSettings.borderSize + (LONG)rc.Width, 2 * labelSettings.borderSize + (LONG)rc.Height};
 	SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndSize.cx, wndSize.cy, SWP_NOMOVE | SWP_NOACTIVATE);
 
 	SolidBrush bgBrush(Color::Color(0xaf007cfe));
@@ -131,8 +131,8 @@ void stamp(HWND hwnd, LPCWSTR text)
 	rc.Y += 2;
 	g.DrawString(text, wcslen(text), fontPlus, rc, &format, &brushPlus);
 
-	POINT ptSrc = { 0, 0 };
-	POINT ptDst = { rt.left, rt.top };
+	POINT ptSrc = {0, 0};
+	POINT ptDst = {rt.left, rt.top};
 	BLENDFUNCTION blendFunction;
 	blendFunction.AlphaFormat = AC_SRC_ALPHA;
 	blendFunction.BlendFlags = 0;
@@ -145,7 +145,7 @@ void stamp(HWND hwnd, LPCWSTR text)
 }
 void updateLayeredWindow(HWND hwnd)
 {
-	POINT ptSrc = { 0, 0 };
+	POINT ptSrc = {0, 0};
 	BLENDFUNCTION blendFunction;
 	blendFunction.AlphaFormat = AC_SRC_ALPHA;
 	blendFunction.BlendFlags = 0;
@@ -159,13 +159,13 @@ void updateLayeredWindow(HWND hwnd)
 }
 void eraseLabel(int i)
 {
-	RectF& rt = keyLabels[i].rect;
+	RectF &rt = keyLabels[i].rect;
 	RectF rc(rt.X - labelSettings.borderSize, rt.Y - labelSettings.borderSize, rt.Width + 2 * labelSettings.borderSize + 1, rt.Height + 2 * labelSettings.borderSize + 1);
 	gCanvas->SetClip(rc);
 	gCanvas->Clear(clearColor);
 	gCanvas->ResetClip();
 }
-void drawLabelFrame(Graphics* g, const Pen* pen, const Brush* brush, RectF& rc, REAL cornerSize)
+void drawLabelFrame(Graphics *g, const Pen *pen, const Brush *brush, RectF &rc, REAL cornerSize)
 {
 	if (cornerSize > 0)
 	{
@@ -193,7 +193,7 @@ void updateLabel(int i)
 
 	if (keyLabels[i].length > 0)
 	{
-		RectF& rc = keyLabels[i].rect;
+		RectF &rc = keyLabels[i].rect;
 		REAL r = 1.0f * keyLabels[i].time / labelSettings.fadeDuration;
 		r = (r > 1.0f) ? 1.0f : r;
 		PointF origin(rc.X, rc.Y);
@@ -214,10 +214,10 @@ void updateLabel(int i)
 		drawLabelFrame(gCanvas, &penPlus, &brushPlus, rc, (REAL)labelSettings.cornerSize);
 		SolidBrush textBrushPlus(Color(BR(textAlpha, labelSettings.textColor)));
 		gCanvas->DrawString(keyLabels[i].text,
-			keyLabels[i].length,
-			fontPlus,
-			PointF(rc.X, rc.Y),
-			&textBrushPlus);
+							keyLabels[i].length,
+							fontPlus,
+							PointF(rc.X, rc.Y),
+							&textBrushPlus);
 	}
 }
 
@@ -257,7 +257,7 @@ static void startFade()
 
 	for (i = 0; i < labelCount; i++)
 	{
-		RectF& rt = keyLabels[i].rect;
+		RectF &rt = keyLabels[i].rect;
 		if (keyLabels[i].time > labelSettings.fadeDuration)
 		{
 			if (keyLabels[i].fade)
@@ -383,7 +383,7 @@ void showText(LPCWSTR text, int behavior = 0)
 	updateLayeredWindow(hMainWnd);
 }
 
-void updateCanvasSize(const POINT& pt)
+void updateCanvasSize(const POINT &pt)
 {
 	for (DWORD i = 0; i < labelCount; i++)
 	{
@@ -465,15 +465,15 @@ void prepareLabels()
 	stamp(hWndStamp, branding);
 }
 
-void GetWorkAreaByOrigin(const POINT& pt, MONITORINFO& mi)
+void GetWorkAreaByOrigin(const POINT &pt, MONITORINFO &mi)
 {
-	RECT rc = { pt.x - 1, pt.y - 1, pt.x + 1, pt.y + 1 };
+	RECT rc = {pt.x - 1, pt.y - 1, pt.x + 1, pt.y + 1};
 	HMONITOR hMonitor = MonitorFromRect(&rc, MONITOR_DEFAULTTONEAREST);
 	mi.cbSize = sizeof(mi);
 	GetMonitorInfo(hMonitor, &mi);
 }
 
-void positionOrigin(int action, POINT& pt)
+void positionOrigin(int action, POINT &pt)
 {
 	if (action == 0)
 	{
@@ -502,7 +502,7 @@ void positionOrigin(int action, POINT& pt)
 		gCanvas->Clear(clearColor);
 	}
 }
-BOOL ColorDialog(HWND hWnd, COLORREF& clr)
+BOOL ColorDialog(HWND hWnd, COLORREF &clr)
 {
 	DWORD dwCustClrs[16] = {
 		RGB(0, 0, 0),
@@ -520,8 +520,7 @@ BOOL ColorDialog(HWND hWnd, COLORREF& clr)
 		RGB(128, 0, 0),
 		RGB(255, 0, 128),
 		RGB(128, 128, 64),
-		RGB(255, 255, 255)
-	};
+		RGB(255, 255, 255)};
 	CHOOSECOLOR dlgColor;
 	dlgColor.lStructSize = sizeof(CHOOSECOLOR);
 	dlgColor.hwndOwner = hWnd;
@@ -546,11 +545,11 @@ HWND CreateToolTip(HWND hDlg, int toolID, LPWSTR pszText)
 
 	// Create the tooltip. g_hInst is the global instance handle.
 	HWND hwndTip = CreateWindowEx(NULL, TOOLTIPS_CLASS, NULL,
-		WS_POPUP | TTS_ALWAYSTIP | TTS_BALLOON,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		CW_USEDEFAULT, CW_USEDEFAULT,
-		hDlg, NULL,
-		hInstance, NULL);
+								  WS_POPUP | TTS_ALWAYSTIP | TTS_BALLOON,
+								  CW_USEDEFAULT, CW_USEDEFAULT,
+								  CW_USEDEFAULT, CW_USEDEFAULT,
+								  hDlg, NULL,
+								  hInstance, NULL);
 
 	if (!hwndTool || !hwndTip)
 	{
@@ -558,7 +557,7 @@ HWND CreateToolTip(HWND hDlg, int toolID, LPWSTR pszText)
 	}
 
 	// Associate the tooltip with the tool.
-	TOOLINFO toolInfo = { 0 };
+	TOOLINFO toolInfo = {0};
 	toolInfo.cbSize = sizeof(toolInfo);
 	toolInfo.hwnd = hDlg;
 	toolInfo.uFlags = TTF_IDISHWND | TTF_SUBCLASS;
@@ -725,7 +724,7 @@ void renderSettingsData(HWND hwndDlg)
 	SetDlgItemText(hwndDlg, IDC_TCKEY, tmp);
 	ComboBox_SetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT), alignment);
 }
-void getLabelSettings(HWND hwndDlg, LabelSettings& lblSettings)
+void getLabelSettings(HWND hwndDlg, LabelSettings &lblSettings)
 {
 	WCHAR tmp[256];
 	GetDlgItemText(hwndDlg, IDC_KEYSTROKEDELAY, tmp, 256);
@@ -756,7 +755,7 @@ DWORD previewTime = 0;
 #define PREVIEWTIMER_INTERVAL 5
 static void previewLabel()
 {
-	RECT rt = { 12, 58, 222, 238 };
+	RECT rt = {12, 58, 222, 238};
 
 	getLabelSettings(hDlgSettings, previewLabelSettings);
 	DWORD mg = previewLabelSettings.lingerTime + previewLabelSettings.fadeDuration + 600;
@@ -822,158 +821,158 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 	WCHAR tmp[256];
 	switch (msg)
 	{
-		case WM_INITDIALOG:
+	case WM_INITDIALOG:
+	{
+		renderSettingsData(hwndDlg);
+		GetWindowRect(hwndDlg, &settingsDlgRect);
+		SetWindowPos(hwndDlg, 0,
+					 desktopRect.right - desktopRect.left - settingsDlgRect.right + settingsDlgRect.left,
+					 desktopRect.bottom - desktopRect.top - settingsDlgRect.bottom + settingsDlgRect.top, 0, 0, SWP_NOSIZE);
+		GetWindowRect(hwndDlg, &settingsDlgRect);
+		CreateToolTip(hwndDlg, IDC_COMBSCHEME, L"[+] to display combination keys like [Alt + Tab].");
+		HWND hCtrl = GetDlgItem(hwndDlg, IDC_ALIGNMENT);
+		ComboBox_InsertString(hCtrl, 0, L"Left");
+		ComboBox_InsertString(hCtrl, 1, L"Right");
+	}
+		return TRUE;
+	case WM_NOTIFY:
+		switch (((LPNMHDR)lParam)->code)
 		{
-			renderSettingsData(hwndDlg);
-			GetWindowRect(hwndDlg, &settingsDlgRect);
-			SetWindowPos(hwndDlg, 0,
-				desktopRect.right - desktopRect.left - settingsDlgRect.right + settingsDlgRect.left,
-				desktopRect.bottom - desktopRect.top - settingsDlgRect.bottom + settingsDlgRect.top, 0, 0, SWP_NOSIZE);
-			GetWindowRect(hwndDlg, &settingsDlgRect);
-			CreateToolTip(hwndDlg, IDC_COMBSCHEME, L"[+] to display combination keys like [Alt + Tab].");
-			HWND hCtrl = GetDlgItem(hwndDlg, IDC_ALIGNMENT);
-			ComboBox_InsertString(hCtrl, 0, L"Left");
-			ComboBox_InsertString(hCtrl, 1, L"Right");
+
+		case NM_CLICK: // Fall through to the next case.
+		case NM_RETURN:
+		{
+			PNMLINK pNMLink = (PNMLINK)lParam;
+			LITEM item = pNMLink->item;
+			ShellExecute(NULL, L"open", item.szUrl, NULL, NULL, SW_SHOW);
+			break;
+		}
+		}
+
+		break;
+	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case IDC_TEXTFONT:
+		{
+			CHOOSEFONT cf;
+			cf.lStructSize = sizeof(CHOOSEFONT);
+			cf.hwndOwner = hwndDlg;
+			cf.hDC = NULL;
+			cf.lpLogFont = &previewLabelSettings.font;
+			cf.iPointSize = 0;
+			cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
+			cf.rgbColors = 0;
+			cf.lCustData = 0;
+			cf.lpfnHook = NULL;
+			cf.lpTemplateName = NULL;
+			cf.hInstance = NULL;
+			cf.lpszStyle = NULL;
+			cf.nFontType = 0; // Returned from ChooseFont
+			cf.nSizeMin = 0;
+			cf.nSizeMax = 0;
+
+			if (ChooseFont(&cf))
+			{
+				prepareLabels();
+				saveSettings();
+			}
 		}
 			return TRUE;
-		case WM_NOTIFY:
-			switch (((LPNMHDR)lParam)->code)
+		case IDC_TEXTCOLOR:
+			if (ColorDialog(hwndDlg, previewLabelSettings.textColor))
 			{
-
-				case NM_CLICK: // Fall through to the next case.
-				case NM_RETURN:
+				prepareLabels();
+				saveSettings();
+			}
+			return TRUE;
+		case IDC_BGCOLOR:
+			if (ColorDialog(hwndDlg, previewLabelSettings.bgColor))
+			{
+				prepareLabels();
+				saveSettings();
+			}
+			return TRUE;
+		case IDC_BORDERCOLOR:
+			if (ColorDialog(hwndDlg, previewLabelSettings.borderColor))
+			{
+				prepareLabels();
+				saveSettings();
+			}
+			return TRUE;
+		case IDC_POSITION:
+		{
+			alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
+			clearColor.SetValue(0x7f7f7f7f);
+			gCanvas->Clear(clearColor);
+			showText(L"\u254b", 1);
+			fadeLastLabel(FALSE);
+			positioning = TRUE;
+		}
+			return TRUE;
+		case IDOK:
+			labelSettings = previewLabelSettings;
+			GetDlgItemText(hwndDlg, IDC_LABELSPACING, tmp, 256);
+			labelSpacing = _wtoi(tmp);
+			if (labelSpacing > (DWORD)(desktopRect.bottom - desktopRect.top) / 3)
+			{
+				labelSpacing = (DWORD)(desktopRect.bottom - desktopRect.top) / 3;
+			}
+			GetDlgItemText(hwndDlg, IDC_MAXIMUMLINES, tmp, 256);
+			maximumLines = _wtoi(tmp);
+			if (maximumLines > MAXLABELS)
+			{
+				maximumLines = MAXLABELS;
+			}
+			else if (maximumLines == 0)
+			{
+				maximumLines = 1;
+			}
+			GetDlgItemText(hwndDlg, IDC_BRANDING, branding, BRANDINGMAX);
+			GetDlgItemText(hwndDlg, IDC_COMBSCHEME, comboChars, 4);
+			visibleShift = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_VISIBLESHIFT));
+			visibleModifier = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_VISIBLEMODIFIER));
+			mouseCapturing = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURING));
+			mouseCapturingMod = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURINGMOD));
+			keyAutoRepeat = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_KEYAUTOREPEAT));
+			mergeMouseActions = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MERGEMOUSEACTIONS));
+			onlyCommandKeys = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_ONLYCOMMANDKEYS));
+			draggableLabel = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_DRAGGABLELABEL));
+			tcModifiers = 0;
+			if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODCTRL))
+			{
+				tcModifiers |= MOD_CONTROL;
+			}
+			if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODALT))
+			{
+				tcModifiers |= MOD_ALT;
+			}
+			if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODSHIFT))
+			{
+				tcModifiers |= MOD_SHIFT;
+			}
+			if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODWIN))
+			{
+				tcModifiers |= MOD_WIN;
+			}
+			GetDlgItemText(hwndDlg, IDC_TCKEY, tmp, 256);
+			alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
+			if (tcModifiers != 0 && tmp[0] != '\0')
+			{
+				tcKey = VkKeyScanEx(tmp[0], GetKeyboardLayout(0));
+				UnregisterHotKey(NULL, 1);
+				if (!RegisterHotKey(NULL, 1, tcModifiers | MOD_NOREPEAT, tcKey))
 				{
-					PNMLINK pNMLink = (PNMLINK)lParam;
-					LITEM item = pNMLink->item;
-					ShellExecute(NULL, L"open", item.szUrl, NULL, NULL, SW_SHOW);
-					break;
+					MessageBox(NULL, L"Unable to register hotkey, you probably need go to settings to redefine your hotkey for toggle capturing.", L"Warning", MB_OK | MB_ICONWARNING);
 				}
 			}
-
-			break;
-		case WM_COMMAND:
-			switch (LOWORD(wParam))
-			{
-				case IDC_TEXTFONT:
-				{
-					CHOOSEFONT cf;
-					cf.lStructSize = sizeof(CHOOSEFONT);
-					cf.hwndOwner = hwndDlg;
-					cf.hDC = NULL;
-					cf.lpLogFont = &previewLabelSettings.font;
-					cf.iPointSize = 0;
-					cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
-					cf.rgbColors = 0;
-					cf.lCustData = 0;
-					cf.lpfnHook = NULL;
-					cf.lpTemplateName = NULL;
-					cf.hInstance = NULL;
-					cf.lpszStyle = NULL;
-					cf.nFontType = 0; // Returned from ChooseFont
-					cf.nSizeMin = 0;
-					cf.nSizeMax = 0;
-
-					if (ChooseFont(&cf))
-					{
-						prepareLabels();
-						saveSettings();
-					}
-				}
-					return TRUE;
-				case IDC_TEXTCOLOR:
-					if (ColorDialog(hwndDlg, previewLabelSettings.textColor))
-					{
-						prepareLabels();
-						saveSettings();
-					}
-					return TRUE;
-				case IDC_BGCOLOR:
-					if (ColorDialog(hwndDlg, previewLabelSettings.bgColor))
-					{
-						prepareLabels();
-						saveSettings();
-					}
-					return TRUE;
-				case IDC_BORDERCOLOR:
-					if (ColorDialog(hwndDlg, previewLabelSettings.borderColor))
-					{
-						prepareLabels();
-						saveSettings();
-					}
-					return TRUE;
-				case IDC_POSITION:
-				{
-					alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
-					clearColor.SetValue(0x7f7f7f7f);
-					gCanvas->Clear(clearColor);
-					showText(L"\u254b", 1);
-					fadeLastLabel(FALSE);
-					positioning = TRUE;
-				}
-					return TRUE;
-				case IDOK:
-					labelSettings = previewLabelSettings;
-					GetDlgItemText(hwndDlg, IDC_LABELSPACING, tmp, 256);
-					labelSpacing = _wtoi(tmp);
-					if (labelSpacing > (DWORD)(desktopRect.bottom - desktopRect.top) / 3)
-					{
-						labelSpacing = (DWORD)(desktopRect.bottom - desktopRect.top) / 3;
-					}
-					GetDlgItemText(hwndDlg, IDC_MAXIMUMLINES, tmp, 256);
-					maximumLines = _wtoi(tmp);
-					if (maximumLines > MAXLABELS)
-					{
-						maximumLines = MAXLABELS;
-					}
-					else if (maximumLines == 0)
-					{
-						maximumLines = 1;
-					}
-					GetDlgItemText(hwndDlg, IDC_BRANDING, branding, BRANDINGMAX);
-					GetDlgItemText(hwndDlg, IDC_COMBSCHEME, comboChars, 4);
-					visibleShift = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_VISIBLESHIFT));
-					visibleModifier = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_VISIBLEMODIFIER));
-					mouseCapturing = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURING));
-					mouseCapturingMod = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURINGMOD));
-					keyAutoRepeat = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_KEYAUTOREPEAT));
-					mergeMouseActions = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MERGEMOUSEACTIONS));
-					onlyCommandKeys = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_ONLYCOMMANDKEYS));
-					draggableLabel = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_DRAGGABLELABEL));
-					tcModifiers = 0;
-					if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODCTRL))
-					{
-						tcModifiers |= MOD_CONTROL;
-					}
-					if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODALT))
-					{
-						tcModifiers |= MOD_ALT;
-					}
-					if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODSHIFT))
-					{
-						tcModifiers |= MOD_SHIFT;
-					}
-					if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODWIN))
-					{
-						tcModifiers |= MOD_WIN;
-					}
-					GetDlgItemText(hwndDlg, IDC_TCKEY, tmp, 256);
-					alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
-					if (tcModifiers != 0 && tmp[0] != '\0')
-					{
-						tcKey = VkKeyScanEx(tmp[0], GetKeyboardLayout(0));
-						UnregisterHotKey(NULL, 1);
-						if (!RegisterHotKey(NULL, 1, tcModifiers | MOD_NOREPEAT, tcKey))
-						{
-							MessageBox(NULL, L"Unable to register hotkey, you probably need go to settings to redefine your hotkey for toggle capturing.", L"Warning", MB_OK | MB_ICONWARNING);
-						}
-					}
-					prepareLabels();
-					saveSettings();
-				case IDCANCEL:
-					EndDialog(hwndDlg, wParam);
-					previewTimer.Stop();
-					return TRUE;
-			}
+			prepareLabels();
+			saveSettings();
+		case IDCANCEL:
+			EndDialog(hwndDlg, wParam);
+			previewTimer.Stop();
+			return TRUE;
+		}
 	}
 	return FALSE;
 }
@@ -982,37 +981,37 @@ LRESULT CALLBACK DraggableWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 	static POINT s_last_mouse;
 	switch (message)
 	{
-		// hold mouse to move
-		case WM_LBUTTONDOWN:
-			SetCapture(hWnd);
-			GetCursorPos(&s_last_mouse);
-			showTimer.Stop();
-			break;
-		case WM_MOUSEMOVE:
-			if (GetCapture() == hWnd)
+	// hold mouse to move
+	case WM_LBUTTONDOWN:
+		SetCapture(hWnd);
+		GetCursorPos(&s_last_mouse);
+		showTimer.Stop();
+		break;
+	case WM_MOUSEMOVE:
+		if (GetCapture() == hWnd)
+		{
+			POINT p;
+			GetCursorPos(&p);
+			int dx = p.x - s_last_mouse.x;
+			int dy = p.y - s_last_mouse.y;
+			if (dx || dy)
 			{
-				POINT p;
-				GetCursorPos(&p);
-				int dx = p.x - s_last_mouse.x;
-				int dy = p.y - s_last_mouse.y;
-				if (dx || dy)
-				{
-					s_last_mouse = p;
-					RECT r;
-					GetWindowRect(hWnd, &r);
-					SetWindowPos(hWnd, HWND_TOPMOST, r.left + dx, r.top + dy, 0, 0, SWP_NOSIZE | SWP_NOACTIVATE);
-				}
+				s_last_mouse = p;
+				RECT r;
+				GetWindowRect(hWnd, &r);
+				SetWindowPos(hWnd, HWND_TOPMOST, r.left + dx, r.top + dy, 0, 0, SWP_NOSIZE | SWP_NOACTIVATE);
 			}
-			break;
-		case WM_LBUTTONUP:
-			ReleaseCapture();
-			showTimer.Start(SHOWTIMER_INTERVAL);
-			break;
-		case WM_LBUTTONDBLCLK:
-			SendMessage(hMainWnd, WM_COMMAND, MENU_CONFIG, 0);
-			break;
-		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
+		}
+		break;
+	case WM_LBUTTONUP:
+		ReleaseCapture();
+		showTimer.Start(SHOWTIMER_INTERVAL);
+		break;
+	case WM_LBUTTONDBLCLK:
+		SendMessage(hMainWnd, WM_COMMAND, MENU_CONFIG, 0);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 }
@@ -1025,113 +1024,113 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 
 	switch (message)
 	{
-		// trayicon
-		case WM_CREATE:
-		{
-			memset(&nid, 0, sizeof(nid));
+	// trayicon
+	case WM_CREATE:
+	{
+		memset(&nid, 0, sizeof(nid));
 
-			nid.cbSize = sizeof(nid);
-			nid.hWnd = hWnd;
-			nid.uID = IDI_TRAY;
-			nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
-			nid.uCallbackMessage = WM_TRAYMSG;
-			nid.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
-			lstrcpy(nid.szTip, L"KeyCast On Windows by brook hong");
-			Shell_NotifyIcon(NIM_ADD, &nid);
+		nid.cbSize = sizeof(nid);
+		nid.hWnd = hWnd;
+		nid.uID = IDI_TRAY;
+		nid.uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP;
+		nid.uCallbackMessage = WM_TRAYMSG;
+		nid.hIcon = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_ICON1));
+		lstrcpy(nid.szTip, L"KeyCast On Windows by brook hong");
+		Shell_NotifyIcon(NIM_ADD, &nid);
 
-			hPopMenu = CreatePopupMenu();
-			AppendMenu(hPopMenu, MF_STRING, MENU_CONFIG, L"&Settings...");
-			AppendMenu(hPopMenu, MF_STRING, MENU_RESTORE, L"&Restore default settings");
-			AppendMenu(hPopMenu, MF_STRING, MENU_EXIT, L"E&xit");
-			SetMenuDefaultItem(hPopMenu, MENU_CONFIG, FALSE);
-		}
-		break;
-		case WM_TRAYMSG:
+		hPopMenu = CreatePopupMenu();
+		AppendMenu(hPopMenu, MF_STRING, MENU_CONFIG, L"&Settings...");
+		AppendMenu(hPopMenu, MF_STRING, MENU_RESTORE, L"&Restore default settings");
+		AppendMenu(hPopMenu, MF_STRING, MENU_EXIT, L"E&xit");
+		SetMenuDefaultItem(hPopMenu, MENU_CONFIG, FALSE);
+	}
+	break;
+	case WM_TRAYMSG:
+	{
+		switch (lParam)
 		{
-			switch (lParam)
-			{
-				case WM_RBUTTONUP:
-				{
-					POINT pnt;
-					GetCursorPos(&pnt);
-					SetForegroundWindow(hWnd); // needed to get keyboard focus
-					TrackPopupMenu(hPopMenu, TPM_LEFTALIGN, pnt.x, pnt.y, 0, hWnd, NULL);
-				}
-				break;
-				case WM_LBUTTONDBLCLK:
-					SendMessage(hWnd, WM_COMMAND, MENU_CONFIG, 0);
-					return 0;
-			}
-		}
-		break;
-		case WM_COMMAND:
+		case WM_RBUTTONUP:
 		{
-			switch (LOWORD(wParam))
-			{
-				case MENU_CONFIG:
-					CopyMemory(&previewLabelSettings, &labelSettings, sizeof(previewLabelSettings));
-					renderSettingsData(hDlgSettings);
-					ShowWindow(hDlgSettings, SW_SHOW);
-					SetForegroundWindow(hDlgSettings);
-					previewTimer.Start(PREVIEWTIMER_INTERVAL);
-					break;
-				case MENU_RESTORE:
-					DeleteFile(iniFile);
-					loadSettings();
-					updateCanvasSize(deskOrigin);
-					createCanvas();
-					prepareLabels();
-					break;
-				case MENU_EXIT:
-					Shell_NotifyIcon(NIM_DELETE, &nid);
-					ExitProcess(0);
-					break;
-				default:
-					break;
-			}
+			POINT pnt;
+			GetCursorPos(&pnt);
+			SetForegroundWindow(hWnd); // needed to get keyboard focus
+			TrackPopupMenu(hPopMenu, TPM_LEFTALIGN, pnt.x, pnt.y, 0, hWnd, NULL);
 		}
 		break;
-		case WM_DESTROY:
-			PostQuitMessage(0);
+		case WM_LBUTTONDBLCLK:
+			SendMessage(hWnd, WM_COMMAND, MENU_CONFIG, 0);
+			return 0;
+		}
+	}
+	break;
+	case WM_COMMAND:
+	{
+		switch (LOWORD(wParam))
+		{
+		case MENU_CONFIG:
+			CopyMemory(&previewLabelSettings, &labelSettings, sizeof(previewLabelSettings));
+			renderSettingsData(hDlgSettings);
+			ShowWindow(hDlgSettings, SW_SHOW);
+			SetForegroundWindow(hDlgSettings);
+			previewTimer.Start(PREVIEWTIMER_INTERVAL);
 			break;
-		case WM_DISPLAYCHANGE:
-		{
-			MONITORINFO mi;
-			GetWorkAreaByOrigin(deskOrigin, mi);
-			CopyMemory(&desktopRect, &mi.rcWork, sizeof(RECT));
-			MoveWindow(hMainWnd, desktopRect.left, desktopRect.top, 1, 1, TRUE);
-			fixDeskOrigin();
+		case MENU_RESTORE:
+			DeleteFile(iniFile);
+			loadSettings();
 			updateCanvasSize(deskOrigin);
 			createCanvas();
 			prepareLabels();
-		}
-		break;
-		// hold mouse to move
-		case WM_LBUTTONDOWN:
-			SetCapture(hWnd);
-			GetCursorPos(&s_last_mouse);
-			showTimer.Stop();
 			break;
-		case WM_MOUSEMOVE:
-			if (GetCapture() == hWnd)
-			{
-				POINT p;
-				GetCursorPos(&p);
-				int dx = p.x - s_last_mouse.x;
-				int dy = p.y - s_last_mouse.y;
-				if (dx || dy)
-				{
-					s_last_mouse = p;
-					positionOrigin(0, p);
-				}
-			}
-			break;
-		case WM_LBUTTONUP:
-			ReleaseCapture();
-			showTimer.Start(100);
+		case MENU_EXIT:
+			Shell_NotifyIcon(NIM_DELETE, &nid);
+			ExitProcess(0);
 			break;
 		default:
-			return DefWindowProc(hWnd, message, wParam, lParam);
+			break;
+		}
+	}
+	break;
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		break;
+	case WM_DISPLAYCHANGE:
+	{
+		MONITORINFO mi;
+		GetWorkAreaByOrigin(deskOrigin, mi);
+		CopyMemory(&desktopRect, &mi.rcWork, sizeof(RECT));
+		MoveWindow(hMainWnd, desktopRect.left, desktopRect.top, 1, 1, TRUE);
+		fixDeskOrigin();
+		updateCanvasSize(deskOrigin);
+		createCanvas();
+		prepareLabels();
+	}
+	break;
+	// hold mouse to move
+	case WM_LBUTTONDOWN:
+		SetCapture(hWnd);
+		GetCursorPos(&s_last_mouse);
+		showTimer.Stop();
+		break;
+	case WM_MOUSEMOVE:
+		if (GetCapture() == hWnd)
+		{
+			POINT p;
+			GetCursorPos(&p);
+			int dx = p.x - s_last_mouse.x;
+			int dy = p.y - s_last_mouse.y;
+			if (dx || dy)
+			{
+				s_last_mouse = p;
+				positionOrigin(0, p);
+			}
+		}
+		break;
+	case WM_LBUTTONUP:
+		ReleaseCapture();
+		showTimer.Start(100);
+		break;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
 	}
 	return 0;
 }
@@ -1157,7 +1156,7 @@ void CreateMiniDump(LPEXCEPTION_POINTERS lpExceptionInfo)
 {
 	// Open a file
 	HANDLE hFile = CreateFile(L"MiniDump.dmp", GENERIC_READ | GENERIC_WRITE,
-		0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+							  0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
 	if (hFile != NULL && hFile != INVALID_HANDLE_VALUE)
 	{
@@ -1170,7 +1169,7 @@ void CreateMiniDump(LPEXCEPTION_POINTERS lpExceptionInfo)
 
 		MINIDUMP_TYPE mdt = MiniDumpNormal;
 		BOOL retv = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(),
-			hFile, mdt, (lpExceptionInfo != 0) ? &mdei : 0, 0, 0);
+									  hFile, mdt, (lpExceptionInfo != 0) ? &mdei : 0, 0, 0);
 
 		if (!retv)
 		{
@@ -1196,7 +1195,7 @@ LONG __stdcall MyUnhandledExceptionFilter(PEXCEPTION_POINTERS pExceptionInfo)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
-	LPSTR lpszArgs, int nWinMode)
+				   LPSTR lpszArgs, int nWinMode)
 {
 	MSG msg;
 
@@ -1204,9 +1203,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 
 	INITCOMMONCONTROLSEX icex;
 	icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
-	icex.dwICC = ICC_LINK_CLASS | ICC_LISTVIEW_CLASSES | ICC_PAGESCROLLER_CLASS
-		| ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_TREEVIEW_CLASSES
-		| ICC_UPDOWN_CLASS | ICC_USEREX_CLASSES | ICC_WIN95_CLASSES;
+	icex.dwICC = ICC_LINK_CLASS | ICC_LISTVIEW_CLASSES | ICC_PAGESCROLLER_CLASS | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_TREEVIEW_CLASSES | ICC_UPDOWN_CLASS | ICC_USEREX_CLASSES | ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&icex);
 
 	GetModuleFileName(NULL, iniFile, MAX_PATH);
@@ -1242,7 +1239,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 
 	loadSettings();
 	updateCanvasSize(deskOrigin);
-	hDlgSettings = CreateDialog(hThisInst, MAKEINTRESOURCE(IDD_DLGSETTINGS), NULL, (DLGPROC)SettingsWndProc);
+	hDlgSettings = CreateDialog(hThisInst, MAKEINTRESOURCE(IDD_SK_DLGSETTINGS), NULL, (DLGPROC)SettingsWndProc);
 	MyRegisterClassEx(hThisInst, L"STAMP", DraggableWndProc);
 	hWndStamp = CreateWindowEx(
 		WS_EX_LAYERED | WS_EX_NOACTIVATE,
@@ -1260,7 +1257,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 	prepareLabels();
 	ShowWindow(hMainWnd, SW_SHOW);
 	HFONT hlabelFont = CreateFont(20, 10, 0, 0, FW_BLACK, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_OUTLINE_PRECIS,
-		CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Arial"));
+								  CLIP_DEFAULT_PRECIS, ANTIALIASED_QUALITY, VARIABLE_PITCH, TEXT("Arial"));
 	HWND hlink = GetDlgItem(hDlgSettings, IDC_SYSLINK1);
 	SendMessage(hlink, WM_SETFONT, (WPARAM)hlabelFont, TRUE);
 
