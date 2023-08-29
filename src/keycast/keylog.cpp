@@ -428,7 +428,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 	WCHAR c[64] = L"\0";
 	WCHAR tmp[64] = L"\0";
 
-	UINT idx = wp - WM_MOUSEFIRST;
+	UINT idx = (UINT)(wp - WM_MOUSEFIRST);
 	int behavior = 1;
 	static DWORD mouseButtonDown = 0;
 	static DWORD lastClick = 0;
