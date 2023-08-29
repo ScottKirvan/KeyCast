@@ -7,7 +7,7 @@
             "label": "Build C++ project",
             "group": "build",
             "type": "shell",
-            "command": "msbuild",
+            "command": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
             "args": [
                 "${workspaceFolder}\\keycastow.sln",
                 "/t:Build",
@@ -19,7 +19,7 @@
             "label": "Rebuild C++ project",
             "group": "build",
             "type": "shell",
-            "command": "msbuild",
+            "command": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
             "args": [
                 "${workspaceFolder}\\keycastow.sln",
                 "/t:Rebuild",
@@ -31,7 +31,7 @@
             "label": "Clean C++ project",
             "group": "build",
             "type": "shell",
-            "command": "msbuild",
+            "command": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\MSBuild\\Current\\Bin\\MSBuild.exe",
             "args": [
                 "${workspaceFolder}\\keycastow.sln",
                 "/t:Clean",
