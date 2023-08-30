@@ -64,3 +64,6 @@ Code contains modifications by Scott Kirvan.  Modifications (c) 2023 Scott Kirva
 Project Link: [KeyCast](https://github.com/ScottKirvan/KeyCast)   
 [CHANGELOG](notes/CHANGELOG.md)  
 [TODO](notes/TODO.md)  
+
+![logo](logo.jpg)
+
