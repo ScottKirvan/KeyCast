@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2015 Brook Hong
+Copyright (c) 2015 Brook Hong  
 Code contains modifications by Scott Kirvan.  Modifications (c) 2023 Scott Kirvan  
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
