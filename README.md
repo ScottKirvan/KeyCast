@@ -51,7 +51,7 @@
 msbuild /p:platform=win32 /p:Configuration=Release
 ```
 
-Just run:  [keycastow.exe](keycastow.exe)  （on Windows）
+Just run:  [keycast.exe](keycast.exe)  （on Windows）
 
 ## Credits
 A huge thank you and all creds to [Brook Hong](https://brookhong.github.io/) and their original [KeyCastOW](https://github.com/brookhong/KeyCastOW)

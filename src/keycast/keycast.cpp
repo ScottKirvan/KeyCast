@@ -2,8 +2,8 @@
 //
 
 // msbuild /p:platform=win32 /p:Configuration=Release
-// msbuild keycastow.vcxproj /t:Clean
-// rc keycastow.rc && cl -DUNICODE -D_UNICODE keycast.cpp keylog.cpp keycastow.res user32.lib shell32.lib gdi32.lib Comdlg32.lib comctl32.lib
+// msbuild keycast.vcxproj /t:Clean
+// rc keycast.rc && cl -DUNICODE -D_UNICODE keycast.cpp keylog.cpp keycast.res user32.lib shell32.lib gdi32.lib Comdlg32.lib comctl32.lib
 
 #include <windows.h>
 #include <windowsx.h>
@@ -52,10 +52,10 @@ struct LabelSettings
 	int cornerSize;
 };
 LabelSettings labelSettings, previewLabelSettings;
-DWORD labelSpacing;
-BOOL visibleShift = FALSE;
-BOOL visibleModifier = TRUE;
-BOOL mouseCapturing = TRUE;
+DWORD labelSpacing;			 // Label Spacing
+BOOL visibleShift = FALSE;	 // ?
+BOOL visibleModifier = TRUE; // ?
+BOOL mouseCapturing = TRUE;	 // Mouse Action?
 BOOL mouseCapturingMod = FALSE;
 BOOL keyAutoRepeat = TRUE;
 BOOL mergeMouseActions = TRUE;
@@ -82,7 +82,7 @@ POINT canvasOrigin;
 #include "keycast.h"
 #include "keylog.h"
 
-WCHAR *szWinName = L"KeyCastOW";
+WCHAR *szWinName = L"KeyCast";
 HWND hMainWnd;
 HWND hDlgSettings;
 RECT settingsDlgRect;
@@ -430,7 +430,7 @@ void prepareLabels()
 	ReleaseDC(hMainWnd, hdc);
 	RectF box;
 	PointF origin(0, 0);
-	gCanvas->MeasureString(L"\u263b - KeyCastOW OFF", 16, fontPlus, origin, &box);
+	gCanvas->MeasureString(L"\u263b - KeyCast OFF", 16, fontPlus, origin, &box);
 	REAL unitH = box.Height + 2 * labelSettings.borderSize + labelSpacing;
 	labelCount = (desktopRect.bottom - desktopRect.top) / (int)unitH;
 	REAL paddingH = (desktopRect.bottom - desktopRect.top) - unitH * labelCount;
@@ -571,7 +571,7 @@ void writeSettingInt(LPCTSTR lpKeyName, DWORD dw)
 {
 	WCHAR tmp[256];
 	swprintf(tmp, 256, L"%d", dw);
-	WritePrivateProfileString(L"KeyCastOW", lpKeyName, tmp, iniFile);
+	WritePrivateProfileString(L"KeyCast", lpKeyName, tmp, iniFile);
 }
 void saveSettings()
 {
@@ -580,7 +580,7 @@ void saveSettings()
 	writeSettingInt(L"fadeDuration", labelSettings.fadeDuration);
 	writeSettingInt(L"bgColor", labelSettings.bgColor);
 	writeSettingInt(L"textColor", labelSettings.textColor);
-	WritePrivateProfileStruct(L"KeyCastOW", L"labelFont", (LPVOID)&labelSettings.font, sizeof(labelSettings.font), iniFile);
+	WritePrivateProfileStruct(L"KeyCast", L"labelFont", (LPVOID)&labelSettings.font, sizeof(labelSettings.font), iniFile);
 	writeSettingInt(L"bgOpacity", labelSettings.bgOpacity);
 	writeSettingInt(L"textOpacity", labelSettings.textOpacity);
 	writeSettingInt(L"borderOpacity", labelSettings.borderOpacity);
@@ -610,8 +610,8 @@ void saveSettings()
 	}
 	writeSettingInt(L"tcModifiers", tcModifiers);
 	writeSettingInt(L"tcKey", tcKey);
-	WritePrivateProfileString(L"KeyCastOW", L"branding", branding, iniFile);
-	WritePrivateProfileString(L"KeyCastOW", L"comboChars", comboChars, iniFile);
+	WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
+	WritePrivateProfileString(L"KeyCast", L"comboChars", comboChars, iniFile);
 }
 void fixDeskOrigin()
 {
@@ -626,39 +626,39 @@ void fixDeskOrigin()
 }
 void loadSettings()
 {
-	labelSettings.keyStrokeDelay = GetPrivateProfileInt(L"KeyCastOW", L"keyStrokeDelay", 500, iniFile);
-	labelSettings.lingerTime = GetPrivateProfileInt(L"KeyCastOW", L"lingerTime", 1200, iniFile);
-	labelSettings.fadeDuration = GetPrivateProfileInt(L"KeyCastOW", L"fadeDuration", 310, iniFile);
-	labelSettings.bgColor = GetPrivateProfileInt(L"KeyCastOW", L"bgColor", RGB(75, 75, 75), iniFile);
-	labelSettings.textColor = GetPrivateProfileInt(L"KeyCastOW", L"textColor", RGB(255, 255, 255), iniFile);
-	labelSettings.bgOpacity = GetPrivateProfileInt(L"KeyCastOW", L"bgOpacity", 200, iniFile);
-	labelSettings.textOpacity = GetPrivateProfileInt(L"KeyCastOW", L"textOpacity", 255, iniFile);
-	labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCastOW", L"borderOpacity", 200, iniFile);
-	labelSettings.borderColor = GetPrivateProfileInt(L"KeyCastOW", L"borderColor", RGB(0, 128, 255), iniFile);
-	labelSettings.borderSize = GetPrivateProfileInt(L"KeyCastOW", L"borderSize", 8, iniFile);
-	labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCastOW", L"cornerSize", 2, iniFile);
-	labelSpacing = GetPrivateProfileInt(L"KeyCastOW", L"labelSpacing", 1, iniFile);
-	maximumLines = GetPrivateProfileInt(L"KeyCastOW", L"maximumLines", 10, iniFile);
+	labelSettings.keyStrokeDelay = GetPrivateProfileInt(L"KeyCast", L"keyStrokeDelay", 500, iniFile);
+	labelSettings.lingerTime = GetPrivateProfileInt(L"KeyCast", L"lingerTime", 1200, iniFile);
+	labelSettings.fadeDuration = GetPrivateProfileInt(L"KeyCast", L"fadeDuration", 310, iniFile);
+	labelSettings.bgColor = GetPrivateProfileInt(L"KeyCast", L"bgColor", RGB(75, 75, 75), iniFile);
+	labelSettings.textColor = GetPrivateProfileInt(L"KeyCast", L"textColor", RGB(255, 255, 255), iniFile);
+	labelSettings.bgOpacity = GetPrivateProfileInt(L"KeyCast", L"bgOpacity", 200, iniFile);
+	labelSettings.textOpacity = GetPrivateProfileInt(L"KeyCast", L"textOpacity", 255, iniFile);
+	labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCast", L"borderOpacity", 200, iniFile);
+	labelSettings.borderColor = GetPrivateProfileInt(L"KeyCast", L"borderColor", RGB(0, 128, 255), iniFile);
+	labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 8, iniFile);
+	labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCast", L"cornerSize", 2, iniFile);
+	labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
+	maximumLines = GetPrivateProfileInt(L"KeyCast", L"maximumLines", 10, iniFile);
 	if (maximumLines == 0)
 	{
 		maximumLines = 1;
 	}
-	deskOrigin.x = GetPrivateProfileInt(L"KeyCastOW", L"offsetX", 2, iniFile);
-	deskOrigin.y = GetPrivateProfileInt(L"KeyCastOW", L"offsetY", 2, iniFile);
+	deskOrigin.x = GetPrivateProfileInt(L"KeyCast", L"offsetX", 2, iniFile);
+	deskOrigin.y = GetPrivateProfileInt(L"KeyCast", L"offsetY", 2, iniFile);
 	MONITORINFO mi;
 	GetWorkAreaByOrigin(deskOrigin, mi);
 	CopyMemory(&desktopRect, &mi.rcWork, sizeof(RECT));
 	MoveWindow(hMainWnd, desktopRect.left, desktopRect.top, 1, 1, TRUE);
 	fixDeskOrigin();
-	visibleShift = GetPrivateProfileInt(L"KeyCastOW", L"visibleShift", 0, iniFile);
-	visibleModifier = GetPrivateProfileInt(L"KeyCastOW", L"visibleModifier", 1, iniFile);
-	mouseCapturing = GetPrivateProfileInt(L"KeyCastOW", L"mouseCapturing", 1, iniFile);
-	mouseCapturingMod = GetPrivateProfileInt(L"KeyCastOW", L"mouseCapturingMod", 0, iniFile);
-	keyAutoRepeat = GetPrivateProfileInt(L"KeyCastOW", L"keyAutoRepeat", 1, iniFile);
-	mergeMouseActions = GetPrivateProfileInt(L"KeyCastOW", L"mergeMouseActions", 1, iniFile);
-	alignment = GetPrivateProfileInt(L"KeyCastOW", L"alignment", 1, iniFile);
-	onlyCommandKeys = GetPrivateProfileInt(L"KeyCastOW", L"onlyCommandKeys", 0, iniFile);
-	draggableLabel = GetPrivateProfileInt(L"KeyCastOW", L"draggableLabel", 0, iniFile);
+	visibleShift = GetPrivateProfileInt(L"KeyCast", L"visibleShift", 0, iniFile);
+	visibleModifier = GetPrivateProfileInt(L"KeyCast", L"visibleModifier", 1, iniFile);
+	mouseCapturing = GetPrivateProfileInt(L"KeyCast", L"mouseCapturing", 1, iniFile);
+	mouseCapturingMod = GetPrivateProfileInt(L"KeyCast", L"mouseCapturingMod", 0, iniFile);
+	keyAutoRepeat = GetPrivateProfileInt(L"KeyCast", L"keyAutoRepeat", 1, iniFile);
+	mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
+	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 1, iniFile);
+	onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
+	draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
 	if (draggableLabel)
 	{
 		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
@@ -667,10 +667,10 @@ void loadSettings()
 	{
 		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
 	}
-	tcModifiers = GetPrivateProfileInt(L"KeyCastOW", L"tcModifiers", MOD_ALT, iniFile);
-	tcKey = GetPrivateProfileInt(L"KeyCastOW", L"tcKey", 0x42, iniFile);
-	GetPrivateProfileString(L"KeyCastOW", L"branding", L"Hi there, press any key to try, double click to configure.", branding, BRANDINGMAX, iniFile);
-	GetPrivateProfileString(L"KeyCastOW", L"comboChars", L"<->", comboChars, 4, iniFile);
+	tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
+	tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
+	GetPrivateProfileString(L"KeyCast", L"branding", L"Hi there, press any key to try, double click to configure.", branding, BRANDINGMAX, iniFile);
+	GetPrivateProfileString(L"KeyCast", L"comboChars", L"<->", comboChars, 4, iniFile);
 	memset(&labelSettings.font, 0, sizeof(labelSettings.font));
 	labelSettings.font.lfCharSet = DEFAULT_CHARSET;
 	labelSettings.font.lfHeight = -37;
@@ -680,7 +680,7 @@ void loadSettings()
 	labelSettings.font.lfClipPrecision = CLIP_DEFAULT_PRECIS;
 	labelSettings.font.lfQuality = ANTIALIASED_QUALITY;
 	wcscpy_s(labelSettings.font.lfFaceName, LF_FACESIZE, TEXT("Arial Black"));
-	GetPrivateProfileStruct(L"KeyCastOW", L"labelFont", &labelSettings.font, sizeof(labelSettings.font), iniFile);
+	GetPrivateProfileStruct(L"KeyCast", L"labelFont", &labelSettings.font, sizeof(labelSettings.font), iniFile);
 }
 void renderSettingsData(HWND hwndDlg)
 {
@@ -1278,7 +1278,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 		{
 			if (kbdhook)
 			{
-				showText(L"\u263b - KeyCastOW OFF", 1);
+				showText(L"\u263b - KeyCast OFF", 1);
 				UnhookWindowsHookEx(kbdhook);
 				kbdhook = NULL;
 				UnhookWindowsHookEx(moshook);
@@ -1286,7 +1286,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 			}
 			else
 			{
-				showText(L"\u263b - KeyCastOW ON", 1);
+				showText(L"\u263b - KeyCast ON", 1);
 				kbdhook = SetWindowsHookEx(WH_KEYBOARD_LL, LLKeyboardProc, hInstance, NULL);
 				moshook = SetWindowsHookEx(WH_MOUSE_LL, LLMouseProc, hThisInst, 0);
 			}

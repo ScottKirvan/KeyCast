@@ -12,6 +12,7 @@ struct Key
 	int val;
 	LPCWSTR label;
 };
+
 struct Key specialKeys[] = {
 	{0x08, L"Backspace"}, // back
 	{0x09, L"Tab"},
@@ -36,10 +37,10 @@ struct Key specialKeys[] = {
 	{0x22, L"PageDown"},
 	{0x23, L"End"},
 	{0x24, L"Home"},
-	{0x25, L"\u2190"}, // left
-	{0x26, L"\u2191"}, // up
-	{0x27, L"\u2192"}, // right
-	{0x28, L"\u2193"}, // down
+	{0x25, L"Left Arrow"},	// left
+	{0x26, L"Up Arrow"},	// up
+	{0x27, L"Right Arrow"}, // right
+	{0x28, L"Down Arrow"},	// down
 	{0x29, L"Select"},
 	{0x2A, L"Print"},
 	{0x2B, L"Execute"},
@@ -150,10 +151,12 @@ LPCWSTR mouseActions[] = {
 	L"XButtonUp",
 	L"XButtonDBLCLK",
 	L"MouseHWheel"};
+
 LPCWSTR mouseClicks[] = {
-	L"LClick",
-	L"RClick",
-	L"MClick"};
+	L"Left Mouse",
+	L"Right Mouse",
+	L"Middle Mouse"};
+
 LPCWSTR mouseDblClicks[] = {
 	L"LDblClick",
 	L"RDblClick",
@@ -210,6 +213,7 @@ LPCWSTR GetSymbolFromVK(UINT vk, UINT sc, BOOL mod, HKL hklLayout)
 	}
 	return NULL;
 }
+
 LPCWSTR getSpecialKey(UINT vk)
 {
 	static WCHAR unknown[32];
@@ -305,6 +309,7 @@ void cleanModifier(UINT vk, LPWSTR modifierkeys)
 #include "MyStaticVar.h"
 static WCHAR modifierkey[64] = L"\0";
 static BOOL modifierUsed = FALSE;
+
 LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 {
 	KBDLLHOOKSTRUCT k = *(KBDLLHOOKSTRUCT *)lp;
@@ -342,8 +347,8 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 	{
 		lastvk = 0;
 		fadeLastLabel(TRUE);
-		if (k.vkCode >= spk && k.vkCode <= 0xA5 ||
-			k.vkCode == 0x5B || k.vkCode == 0x5C)
+		if (k.vkCode >= spk && k.vkCode <= 0xA5 || // right menu key
+			k.vkCode == 0x5B || k.vkCode == 0x5C)  // left/right win key
 		{
 			cleanModifier(k.vkCode, modifierkey);
 			modifierUsed = FALSE;

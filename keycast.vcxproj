@@ -30,19 +30,20 @@
     <ClInclude Include="src\keycast\timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="res\keycastow.rc" />
+    <ResourceCompile Include="res\keycast.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\keycastow.ico" />
+    <Image Include="res\keycast.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="src\keycastow.exe.manifest" />
+    <Manifest Include="src\keycast.exe.manifest" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{D9A196AF-F63D-4E8E-8724-9364FD8EB4D4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>keycastow</RootNamespace>
+    <RootNamespace>keycast</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>keycast</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

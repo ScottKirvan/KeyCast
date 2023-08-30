@@ -9,7 +9,7 @@
             "type": "shell",
             "command": "msbuild",
             "args": [
-                "${workspaceFolder}\\keycastow.sln",
+                "${workspaceFolder}\\keycast.sln",
                 "/t:Build",
                 "/p:Configuration=Release"
             ],
@@ -21,7 +21,7 @@
             "type": "shell",
             "command": "msbuild",
             "args": [
-                "${workspaceFolder}\\keycastow.sln",
+                "${workspaceFolder}\\keycast.sln",
                 "/t:Rebuild",
                 "/p:Configuration=Release"
             ],
@@ -33,7 +33,7 @@
             "type": "shell",
             "command": "msbuild",
             "args": [
-                "${workspaceFolder}\\keycastow.sln",
+                "${workspaceFolder}\\keycast.sln",
                 "/t:Clean",
                 "/p:Configuration=Release"
             ],
