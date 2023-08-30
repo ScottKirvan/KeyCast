@@ -1194,6 +1194,7 @@ LONG __stdcall MyUnhandledExceptionFilter(PEXCEPTION_POINTERS pExceptionInfo)
 	CreateMiniDump(pExceptionInfo);
 	return EXCEPTION_EXECUTE_HANDLER;
 }
+
 int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 				   LPSTR lpszArgs, int nWinMode)
 {
