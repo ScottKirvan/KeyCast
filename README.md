@@ -23,7 +23,7 @@
   <a href="https://github.com/ScottKirvan/KeyCast/issues/">
     <img src="https://img.shields.io/github/issues/ScottKirvan/KeyCast" alt="open issues" />
   </a>
-  <a href="https://github.com/ScottKirvan/KeyCast/blob/master/LICENSE.md">
+  <a href="https://github.com/ScottKirvan/KeyCast/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/ScottKirvan/KeyCast.svg" alt="license" />
   </a>
   <a href="https://discord.gg/gQH4mXWQRT">
