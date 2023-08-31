@@ -169,7 +169,7 @@ size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 //  extern BOOL mouseCapturing;
 // extern BOOL mouseCapturingMod;
 // extern BOOL keyAutoRepeat;
-extern BOOL mergeMouseActions;
+// extern BOOL mergeMouseActions;
 // extern BOOL onlyCommandKeys;
 extern WCHAR comboChars[3];
 extern BOOL positioning;
@@ -255,7 +255,7 @@ LPCWSTR getModSpecialKey(UINT vk, BOOL mod = FALSE)
 	}
 	else
 	{
-		WCHAR tmp[64];
+		// WCHAR tmp[64];
 		LPCWSTR sk = getSpecialKey(vk);
 		/*
 		if (!TRUE && GetKeyState(VK_SHIFT) < 0)
@@ -482,7 +482,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 						swprintf(c, 64, L"%sDown", mouseActions[idx]);
 				}
 			}
-			else if (mergeMouseActions)
+			else /* if (mergeMouseActions) */
 			{
 				switch (idx)
 				{
@@ -542,6 +542,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 					break;
 				}
 			}
+			/*
 			else
 			{
 				swprintf(c, 64, mouseActions[idx]);
@@ -550,6 +551,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 					holdButton = TRUE;
 				}
 			}
+			*/
 
 			if (!skip)
 			{

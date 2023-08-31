@@ -55,12 +55,12 @@ struct LabelSettings
 LabelSettings labelSettings, previewLabelSettings;
 
 // DWORD labelSpacing;				// Label Spacing
-//BOOL visibleShift = TRUE; // // Shift as Modifier Key
+// BOOL visibleShift = TRUE; // // Shift as Modifier Key
 // BOOL visibleModifier = TRUE;	// Display  Standalong Modifier Key - this is displayed next to the mouse in screencastkeys, and only shows up in the  normal key display when used with a key to modify
 // BOOL mouseCapturing = TRUE; // Mouse Action?
 //  BOOL mouseCapturingMod = FALSE; // Mouse Only With Modifier
 // BOOL keyAutoRepeat = TRUE;		// Hold down to repeat
-BOOL mergeMouseActions = TRUE; // Detect Click / DblClick
+// BOOL mergeMouseActions = TRUE; // Detect Click / DblClick
 int alignment = 1;
 //  BOOL onlyCommandKeys = FALSE; // Only Command Keys
 BOOL positioning = FALSE;
@@ -599,7 +599,7 @@ void saveSettings()
 	// writeSettingInt(L"mouseCapturing", mouseCapturing);
 	// writeSettingInt(L"mouseCapturingMod", mouseCapturingMod);
 	// writeSettingInt(L"keyAutoRepeat", keyAutoRepeat);
-	writeSettingInt(L"mergeMouseActions", mergeMouseActions);
+	// writeSettingInt(L"mergeMouseActions", mergeMouseActions);
 	writeSettingInt(L"alignment", alignment);
 	// writeSettingInt(L"onlyCommandKeys", onlyCommandKeys);
 	writeSettingInt(L"draggableLabel", draggableLabel);
@@ -658,7 +658,7 @@ void loadSettings()
 	// mouseCapturing = GetPrivateProfileInt(L"KeyCast", L"mouseCapturing", 1, iniFile);
 	//  mouseCapturingMod = GetPrivateProfileInt(L"KeyCast", L"mouseCapturingMod", 0, iniFile);
 	// keyAutoRepeat = GetPrivateProfileInt(L"KeyCast", L"keyAutoRepeat", 1, iniFile);
-	mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
+	// mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
 	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 1, iniFile);
 	// onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
 	draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
@@ -716,7 +716,7 @@ void renderSettingsData(HWND hwndDlg)
 	// CheckDlgButton(hwndDlg, IDC_MOUSECAPTURING, mouseCapturing ? BST_CHECKED : BST_UNCHECKED);
 	//  CheckDlgButton(hwndDlg, IDC_MOUSECAPTURINGMOD, mouseCapturingMod ? BST_CHECKED : BST_UNCHECKED);
 	// CheckDlgButton(hwndDlg, IDC_KEYAUTOREPEAT, keyAutoRepeat ? BST_CHECKED : BST_UNCHECKED);
-	CheckDlgButton(hwndDlg, IDC_MERGEMOUSEACTIONS, mergeMouseActions ? BST_CHECKED : BST_UNCHECKED);
+	// CheckDlgButton(hwndDlg, IDC_MERGEMOUSEACTIONS, mergeMouseActions ? BST_CHECKED : BST_UNCHECKED);
 	// CheckDlgButton(hwndDlg, IDC_ONLYCOMMANDKEYS, onlyCommandKeys ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButton(hwndDlg, IDC_DRAGGABLELABEL, draggableLabel ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButton(hwndDlg, IDC_MODCTRL, (tcModifiers & MOD_CONTROL) ? BST_CHECKED : BST_UNCHECKED);
@@ -941,7 +941,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			// mouseCapturing = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURING));
 			//  mouseCapturingMod = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURINGMOD));
 			// keyAutoRepeat = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_KEYAUTOREPEAT));
-			mergeMouseActions = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MERGEMOUSEACTIONS));
+			// mergeMouseActions = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MERGEMOUSEACTIONS));
 			// onlyCommandKeys = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_ONLYCOMMANDKEYS));
 			draggableLabel = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_DRAGGABLELABEL));
 			tcModifiers = 0;
