@@ -1207,9 +1207,9 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 	MSG msg;
 
 	RedirectIOToConsole();
-	DebugPrint("test\n");
-	DebugPrint("test %d\n", 53);
-	DebugPrint("test\n");
+	// DebugPrint("test\n");
+	// DebugPrint("test %d\n", 53);
+	// DebugPrint("test\n");
 
 	hInstance = hThisInst;
 
