@@ -166,7 +166,7 @@ size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
 // extern BOOL visibleShift;
 // extern BOOL visibleModifier;
-extern BOOL mouseCapturing;
+//  extern BOOL mouseCapturing;
 // extern BOOL mouseCapturingMod;
 // extern BOOL keyAutoRepeat;
 extern BOOL mergeMouseActions;
@@ -453,7 +453,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 		MSLLHOOKSTRUCT *ms = reinterpret_cast<MSLLHOOKSTRUCT *>(lp);
 		positionOrigin(idx, ms->pt);
 	}
-	else if ((mouseCapturing /*|| mouseCapturingMod */) && idx > 0 && idx < nMouseActions && nCode == HC_ACTION)
+	else if (/*( mouseCapturing || mouseCapturingMod ) && */ idx > 0 && idx < nMouseActions && nCode == HC_ACTION)
 	{
 		MSLLHOOKSTRUCT *ms = reinterpret_cast<MSLLHOOKSTRUCT *>(lp);
 
