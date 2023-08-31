@@ -170,7 +170,7 @@ extern BOOL mouseCapturing;
 extern BOOL mouseCapturingMod;
 // extern BOOL keyAutoRepeat;
 extern BOOL mergeMouseActions;
-extern BOOL onlyCommandKeys;
+// extern BOOL onlyCommandKeys;
 extern WCHAR comboChars[3];
 extern BOOL positioning;
 extern WCHAR deferredLabel[64];
@@ -419,7 +419,7 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 					addBracket(tmp);
 					theKey = tmp;
 				}
-				if (fin || !onlyCommandKeys)
+				if (fin /*|| !onlyCommandKeys*/)
 				{
 					showText(theKey, fin);
 				}
