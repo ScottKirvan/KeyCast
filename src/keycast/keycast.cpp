@@ -54,7 +54,7 @@ struct LabelSettings
 };
 LabelSettings labelSettings, previewLabelSettings;
 
-DWORD labelSpacing;				// Label Spacing
+// DWORD labelSpacing;				// Label Spacing
 BOOL visibleShift = FALSE;		// // Shift as Modifier Key
 BOOL visibleModifier = TRUE;	// Display  Standalong Modifier Key
 BOOL mouseCapturing = TRUE;		// Mouse Action?
@@ -433,7 +433,7 @@ void prepareLabels()
 	RectF box;
 	PointF origin(0, 0);
 	gCanvas->MeasureString(L"\u263b - KeyCast OFF", 16, fontPlus, origin, &box);
-	REAL unitH = box.Height + 2 * labelSettings.borderSize + labelSpacing;
+	REAL unitH = box.Height + 2 * labelSettings.borderSize;// + labelSpacing;
 	labelCount = (desktopRect.bottom - desktopRect.top) / (int)unitH;
 	REAL paddingH = (desktopRect.bottom - desktopRect.top) - unitH * labelCount;
 
@@ -453,7 +453,8 @@ void prepareLabels()
 	for (DWORD i = 0; i < labelCount; i++)
 	{
 		keyLabels[i].rect.X = (REAL)labelSettings.borderSize;
-		keyLabels[i].rect.Y = paddingH + unitH * (i + offset) + labelSpacing + labelSettings.borderSize;
+		// keyLabels[i].rect.Y = paddingH + unitH * (i + offset) + labelSpacing + labelSettings.borderSize;
+		keyLabels[i].rect.Y = paddingH + unitH * (i + offset) + labelSettings.borderSize;
 		if (keyLabels[i].time > labelSettings.lingerTime + labelSettings.fadeDuration)
 		{
 			keyLabels[i].time = labelSettings.lingerTime + labelSettings.fadeDuration;
@@ -589,7 +590,7 @@ void saveSettings()
 	writeSettingInt(L"borderColor", labelSettings.borderColor);
 	writeSettingInt(L"borderSize", labelSettings.borderSize);
 	writeSettingInt(L"cornerSize", labelSettings.cornerSize);
-	writeSettingInt(L"labelSpacing", labelSpacing);
+	// writeSettingInt(L"labelSpacing", labelSpacing);
 	writeSettingInt(L"maximumLines", maximumLines);
 	writeSettingInt(L"offsetX", deskOrigin.x);
 	writeSettingInt(L"offsetY", deskOrigin.y);
@@ -639,7 +640,7 @@ void loadSettings()
 	labelSettings.borderColor = GetPrivateProfileInt(L"KeyCast", L"borderColor", RGB(0, 128, 255), iniFile);
 	labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 8, iniFile);
 	labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCast", L"cornerSize", 2, iniFile);
-	labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
+	// labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
 	maximumLines = GetPrivateProfileInt(L"KeyCast", L"maximumLines", 10, iniFile);
 	if (maximumLines == 0)
 	{
@@ -704,8 +705,8 @@ void renderSettingsData(HWND hwndDlg)
 	swprintf(tmp, 256, L"%d", previewLabelSettings.cornerSize);
 	SetDlgItemText(hwndDlg, IDC_CORNERSIZE, tmp);
 
-	swprintf(tmp, 256, L"%d", labelSpacing);
-	SetDlgItemText(hwndDlg, IDC_LABELSPACING, tmp);
+	// swprintf(tmp, 256, L"%d", labelSpacing);
+	// SetDlgItemText(hwndDlg, IDC_LABELSPACING, tmp);
 	swprintf(tmp, 256, L"%d", maximumLines);
 	SetDlgItemText(hwndDlg, IDC_MAXIMUMLINES, tmp);
 	SetDlgItemText(hwndDlg, IDC_BRANDING, branding);
@@ -916,11 +917,13 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 		case IDOK:
 			labelSettings = previewLabelSettings;
 			GetDlgItemText(hwndDlg, IDC_LABELSPACING, tmp, 256);
+			/*
 			labelSpacing = _wtoi(tmp);
 			if (labelSpacing > (DWORD)(desktopRect.bottom - desktopRect.top) / 3)
 			{
 				labelSpacing = (DWORD)(desktopRect.bottom - desktopRect.top) / 3;
 			}
+			*/
 			GetDlgItemText(hwndDlg, IDC_MAXIMUMLINES, tmp, 256);
 			maximumLines = _wtoi(tmp);
 			if (maximumLines > MAXLABELS)
