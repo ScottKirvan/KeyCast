@@ -65,5 +65,4 @@ Project Link: [KeyCast](https://github.com/ScottKirvan/KeyCast)
 [CHANGELOG](notes/CHANGELOG.md)  
 [TODO](notes/TODO.md)  
 
-![logo](logo.jpg)
 
