@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\keycast\DebugPrint.cpp" />
     <ClCompile Include="src\keycast\keycast.cpp" />
     <ClCompile Include="src\keycast\keylog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\resource.h" />
+    <ClInclude Include="src\keycast\DebugPrint.h" />
     <ClInclude Include="src\keycast\keycast.h" />
     <ClInclude Include="src\keycast\keylog.h" />
     <ClInclude Include="src\keycast\MyStaticVar.h" />
