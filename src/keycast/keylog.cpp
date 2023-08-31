@@ -373,7 +373,7 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 			{
 				wcscpy_s(modifierkey, 64, ck);
 			}
-			else if (!wcsstr(modifierkey, ck)
+			else if (!wcsstr(modifierkey, ck))
 			{
 				wcscpy_s(tmp, 64, modifierkey);
 				swprintf(modifierkey, 64, L"%s %c %s", tmp, comboChars[1], ck);
