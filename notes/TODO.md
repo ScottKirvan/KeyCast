@@ -26,6 +26,7 @@ TODO
 - [ ] lose the carriage return every time you hit space - hold on this idea - I want to see how the screen actually looks when using unreal - maybe it makes sense to keep it?  like tabbing between stuff?  maybe this is a setting... like even make it so each key gets it's own line?
 - [ ] align left, center, right
 - [ ] add an x, y offset (let it be negative, don't let it crash)
+- [ ] replace the branding text stuff with a user definable image that can be loaded -- a bit more useful for the streamers, I think.
 
 In Progress
 -----------

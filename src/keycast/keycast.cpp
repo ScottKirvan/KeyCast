@@ -61,7 +61,7 @@ LabelSettings labelSettings, previewLabelSettings;
 //  BOOL mouseCapturingMod = FALSE; // Mouse Only With Modifier
 // BOOL keyAutoRepeat = TRUE;		// Hold down to repeat
 // BOOL mergeMouseActions = TRUE; // Detect Click / DblClick
-int alignment = 1;
+int alignment = 0; // 0: left, 1: right -- todo add center
 //  BOOL onlyCommandKeys = FALSE; // Only Command Keys
 BOOL positioning = FALSE;
 // BOOL draggableLabel = FALSE; // Draggable Label
@@ -663,7 +663,7 @@ void loadSettings()
 	//  mouseCapturingMod = GetPrivateProfileInt(L"KeyCast", L"mouseCapturingMod", 0, iniFile);
 	// keyAutoRepeat = GetPrivateProfileInt(L"KeyCast", L"keyAutoRepeat", 1, iniFile);
 	// mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
-	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 1, iniFile);
+	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 0, iniFile);
 	// onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
 	// draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
 	/*
@@ -733,7 +733,7 @@ void renderSettingsData(HWND hwndDlg)
 	CheckDlgButton(hwndDlg, IDC_MODWIN, (tcModifiers & MOD_WIN) ? BST_CHECKED : BST_UNCHECKED);
 	swprintf(tmp, 256, L"%c", MapVirtualKey(tcKey, MAPVK_VK_TO_CHAR));
 	SetDlgItemText(hwndDlg, IDC_TCKEY, tmp);
-	ComboBox_SetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT), alignment);
+	// ComboBox_SetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT), alignment);
 }
 
 void getLabelSettings(HWND hwndDlg, LabelSettings &lblSettings)
@@ -842,9 +842,9 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 					 desktopRect.bottom - desktopRect.top - settingsDlgRect.bottom + settingsDlgRect.top, 0, 0, SWP_NOSIZE);
 		GetWindowRect(hwndDlg, &settingsDlgRect);
 		CreateToolTip(hwndDlg, IDC_COMBSCHEME, L"[+] to display combination keys like [Alt + Tab].");
-		HWND hCtrl = GetDlgItem(hwndDlg, IDC_ALIGNMENT);
-		ComboBox_InsertString(hCtrl, 0, L"Left");
-		ComboBox_InsertString(hCtrl, 1, L"Right");
+		// HWND hCtrl = GetDlgItem(hwndDlg, IDC_ALIGNMENT);
+		// ComboBox_InsertString(hCtrl, 0, L"Left");
+		// ComboBox_InsertString(hCtrl, 1, L"Right");
 	}
 		return TRUE;
 	case WM_NOTIFY:
@@ -914,7 +914,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			return TRUE;
 		case IDC_POSITION:
 		{
-			alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
+			// alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
 			clearColor.SetValue(0x7f7f7f7f);
 			gCanvas->Clear(clearColor);
 			showText(L"\u254b", 1);
@@ -970,7 +970,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 				tcModifiers |= MOD_WIN;
 			}
 			GetDlgItemText(hwndDlg, IDC_TCKEY, tmp, 256);
-			alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
+			// alignment = ComboBox_GetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT));
 			if (tcModifiers != 0 && tmp[0] != '\0')
 			{
 				tcKey = VkKeyScanEx(tmp[0], GetKeyboardLayout(0));
@@ -1259,6 +1259,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 	}
 
 	loadSettings();
+	saveSettings(); // save this right back out, in case one doesn't exist - this way the user has a file to edit
 	updateCanvasSize(deskOrigin);
 	hDlgSettings = CreateDialog(hThisInst, MAKEINTRESOURCE(IDD_SK_DLGSETTINGS), NULL, (DLGPROC)SettingsWndProc);
 	MyRegisterClassEx(hThisInst, L"STAMP", DraggableWndProc);
