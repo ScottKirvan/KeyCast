@@ -64,9 +64,9 @@ LabelSettings labelSettings, previewLabelSettings;
 int alignment = 1;
 //  BOOL onlyCommandKeys = FALSE; // Only Command Keys
 BOOL positioning = FALSE;
-BOOL draggableLabel = FALSE; // Draggable Label
-UINT tcModifiers = MOD_ALT;	 // Toggle Capture - Alt
-UINT tcKey = 0x42;			 // 0x42 is 'b'  // Toggle Capture - b
+// BOOL draggableLabel = FALSE; // Draggable Label
+UINT tcModifiers = MOD_ALT; // Toggle Capture - Alt
+UINT tcKey = 0x42;			// 0x42 is 'b'  // Toggle Capture - b
 Color clearColor(0, 127, 127, 127);
 #define BRANDINGMAX 256
 WCHAR branding[BRANDINGMAX]; // Branding
@@ -602,15 +602,19 @@ void saveSettings()
 	// writeSettingInt(L"mergeMouseActions", mergeMouseActions);
 	writeSettingInt(L"alignment", alignment);
 	// writeSettingInt(L"onlyCommandKeys", onlyCommandKeys);
-	writeSettingInt(L"draggableLabel", draggableLabel);
+	// writeSettingInt(L"draggableLabel", draggableLabel);
+	/*
 	if (draggableLabel)
 	{
 		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
 	}
 	else
 	{
-		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
+		*/
+	SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
+	/*
 	}
+	*/
 	writeSettingInt(L"tcModifiers", tcModifiers);
 	writeSettingInt(L"tcKey", tcKey);
 	WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
@@ -661,15 +665,19 @@ void loadSettings()
 	// mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
 	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 1, iniFile);
 	// onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
-	draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
+	// draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
+	/*
 	if (draggableLabel)
 	{
 		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
 	}
 	else
 	{
-		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
+		*/
+	SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
+	/*
 	}
+	*/
 	tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
 	tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
 	GetPrivateProfileString(L"KeyCast", L"branding", L"Hi there, press any key to try, double click to configure.", branding, BRANDINGMAX, iniFile);
@@ -718,7 +726,7 @@ void renderSettingsData(HWND hwndDlg)
 	// CheckDlgButton(hwndDlg, IDC_KEYAUTOREPEAT, keyAutoRepeat ? BST_CHECKED : BST_UNCHECKED);
 	// CheckDlgButton(hwndDlg, IDC_MERGEMOUSEACTIONS, mergeMouseActions ? BST_CHECKED : BST_UNCHECKED);
 	// CheckDlgButton(hwndDlg, IDC_ONLYCOMMANDKEYS, onlyCommandKeys ? BST_CHECKED : BST_UNCHECKED);
-	CheckDlgButton(hwndDlg, IDC_DRAGGABLELABEL, draggableLabel ? BST_CHECKED : BST_UNCHECKED);
+	// CheckDlgButton(hwndDlg, IDC_DRAGGABLELABEL, draggableLabel ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButton(hwndDlg, IDC_MODCTRL, (tcModifiers & MOD_CONTROL) ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButton(hwndDlg, IDC_MODALT, (tcModifiers & MOD_ALT) ? BST_CHECKED : BST_UNCHECKED);
 	CheckDlgButton(hwndDlg, IDC_MODSHIFT, (tcModifiers & MOD_SHIFT) ? BST_CHECKED : BST_UNCHECKED);
@@ -943,7 +951,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			// keyAutoRepeat = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_KEYAUTOREPEAT));
 			// mergeMouseActions = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MERGEMOUSEACTIONS));
 			// onlyCommandKeys = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_ONLYCOMMANDKEYS));
-			draggableLabel = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_DRAGGABLELABEL));
+			// draggableLabel = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_DRAGGABLELABEL));
 			tcModifiers = 0;
 			if (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MODCTRL))
 			{
