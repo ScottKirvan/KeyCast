@@ -419,10 +419,10 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 					addBracket(tmp);
 					theKey = tmp;
 				}
-				if (fin /*|| !onlyCommandKeys*/)
-				{
-					showText(theKey, fin);
-				}
+				// if (fin || !onlyCommandKeys)
+				// {
+				showText(theKey, fin);
+				// }
 			}
 		}
 		lastvk = k.vkCode;
