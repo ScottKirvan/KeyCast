@@ -165,7 +165,7 @@ LPCWSTR mouseDblClicks[] = {
 size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
 extern BOOL visibleShift;
-extern BOOL visibleModifier;
+// extern BOOL visibleModifier;
 extern BOOL mouseCapturing;
 extern BOOL mouseCapturingMod;
 // extern BOOL keyAutoRepeat;
@@ -378,7 +378,9 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 				wcscpy_s(tmp, 64, modifierkey);
 				swprintf(modifierkey, 64, L"%s %c %s", tmp, comboChars[1], ck);
 			}
-			if (!modifierUsed && visibleModifier)
+			// this is the case where there's a modifier key pressed but doesn't modify any other key
+			// in screencast keys, this shows up next to the mouse image, not in the text list
+			if (!modifierUsed /* && visibleModifier */)
 			{
 				swprintf(c, 64, L"%s", modifierkey);
 				addBracket(c);
