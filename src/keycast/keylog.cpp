@@ -164,7 +164,7 @@ LPCWSTR mouseDblClicks[] = {
 
 size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
-extern BOOL visibleShift;
+// extern BOOL visibleShift;
 // extern BOOL visibleModifier;
 extern BOOL mouseCapturing;
 // extern BOOL mouseCapturingMod;
@@ -199,12 +199,14 @@ LPCWSTR GetSymbolFromVK(UINT vk, UINT sc, BOOL mod, HKL hklLayout)
 	int rr = ToUnicodeEx(vk, sc, btKeyState, cc, 2, 0, hklLayout);
 	if (rr > 0)
 	{
-		if (!visibleShift && mod && GetKeyState(VK_SHIFT) < 0)
+		/*
+		if (!TRUE && mod && GetKeyState(VK_SHIFT) < 0)
 		{
 			// prefix "Shift - " only when Ctrl or Alt is hold (mod as TRUE)
 			swprintf(symbol, 32, L"Shift %c %s", comboChars[1], cc);
 		}
 		else
+		*/
 		{
 			swprintf(symbol, 32, L"%s", cc);
 			symbol[rr] = L'\0';
@@ -255,12 +257,14 @@ LPCWSTR getModSpecialKey(UINT vk, BOOL mod = FALSE)
 	{
 		WCHAR tmp[64];
 		LPCWSTR sk = getSpecialKey(vk);
-		if (!visibleShift && GetKeyState(VK_SHIFT) < 0)
+		/*
+		if (!TRUE && GetKeyState(VK_SHIFT) < 0)
 		{
 			// prefix "Shift - "
 			swprintf(tmp, 64, L"Shift %c %s", comboChars[1], sk);
 			sk = tmp;
 		}
+		*/
 		if (!mod && HIBYTE(sk[0]) == 0)
 		{
 			// if the special key is not used with modifierkey, and has not been replaced with visible symbol
@@ -321,7 +325,8 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 		return CallNextHookEx(kbdhook, nCode, wp, lp);
 
 	static DWORD lastvk = 0;
-	UINT spk = visibleShift ? 0xA0 : 0xA2;
+	//  UINT spk = visibleshift ? 0xA0 : 0xA2;
+	UINT spk = 0xA0;
 	GUITHREADINFO Gti;
 	::ZeroMemory(&Gti, sizeof(GUITHREADINFO));
 	Gti.cbSize = sizeof(GUITHREADINFO);
