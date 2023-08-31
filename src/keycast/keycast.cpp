@@ -52,22 +52,23 @@ struct LabelSettings
 	int cornerSize;
 };
 LabelSettings labelSettings, previewLabelSettings;
-DWORD labelSpacing;			 // Label Spacing
-BOOL visibleShift = FALSE;	 // ?
-BOOL visibleModifier = TRUE; // ?
-BOOL mouseCapturing = TRUE;	 // Mouse Action?
-BOOL mouseCapturingMod = FALSE;
-BOOL keyAutoRepeat = TRUE;
-BOOL mergeMouseActions = TRUE;
+
+DWORD labelSpacing;				// Label Spacing
+BOOL visibleShift = FALSE;		// // Shift as Modifier Key
+BOOL visibleModifier = TRUE;	// Display  Standalong Modifier Key
+BOOL mouseCapturing = TRUE;		// Mouse Action?
+BOOL mouseCapturingMod = FALSE; // Mouse Only With Modifier
+BOOL keyAutoRepeat = TRUE;		// Hold down to repeat
+BOOL mergeMouseActions = TRUE;	// Detect Click / DblClick
 int alignment = 1;
-BOOL onlyCommandKeys = FALSE;
+BOOL onlyCommandKeys = FALSE; // Only Command Keys
 BOOL positioning = FALSE;
-BOOL draggableLabel = FALSE;
-UINT tcModifiers = MOD_ALT;
-UINT tcKey = 0x42; // 0x42 is 'b'
+BOOL draggableLabel = FALSE; // Draggable Label
+UINT tcModifiers = MOD_ALT;	 // Toggle Capture - Alt
+UINT tcKey = 0x42;			 // 0x42 is 'b'  // Toggle Capture - b
 Color clearColor(0, 127, 127, 127);
 #define BRANDINGMAX 256
-WCHAR branding[BRANDINGMAX];
+WCHAR branding[BRANDINGMAX]; // Branding
 WCHAR comboChars[4];
 POINT deskOrigin;
 
@@ -724,6 +725,7 @@ void renderSettingsData(HWND hwndDlg)
 	SetDlgItemText(hwndDlg, IDC_TCKEY, tmp);
 	ComboBox_SetCurSel(GetDlgItem(hwndDlg, IDC_ALIGNMENT), alignment);
 }
+
 void getLabelSettings(HWND hwndDlg, LabelSettings &lblSettings)
 {
 	WCHAR tmp[256];
@@ -1195,10 +1197,80 @@ LONG __stdcall MyUnhandledExceptionFilter(PEXCEPTION_POINTERS pExceptionInfo)
 	return EXCEPTION_EXECUTE_HANDLER;
 }
 
+#include <iostream>
+#include <cstdio>
+#include <fcntl.h>
+#include <io.h>
+
+// This function redirects the C/C++ standard input, output and error
+void RedirectIOToConsole()
+{
+	if (AttachConsole(ATTACH_PARENT_PROCESS) == false)
+		return;
+
+	HANDLE ConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
+	int SystemOutput = _open_osfhandle(intptr_t(ConsoleOutput), _O_TEXT);
+
+	// check if output is a console and not redirected to a file
+	if (_isatty(SystemOutput) == false)
+		return; // return if it's not a TTY
+
+	FILE *COutputHandle = _fdopen(SystemOutput, "w");
+
+	// Get STDERR handle
+	HANDLE ConsoleError = GetStdHandle(STD_ERROR_HANDLE);
+	int SystemError = _open_osfhandle(intptr_t(ConsoleError), _O_TEXT);
+	FILE *CErrorHandle = _fdopen(SystemError, "w");
+
+	// Get STDIN handle
+	HANDLE ConsoleInput = GetStdHandle(STD_INPUT_HANDLE);
+	int SystemInput = _open_osfhandle(intptr_t(ConsoleInput), _O_TEXT);
+	FILE *CInputHandle = _fdopen(SystemInput, "r");
+
+	// make cout, wcout, cin, wcin, wcerr, cerr, wclog and clog point to console as well
+	// ios::sync_with_stdio(true);
+	std::ios_base::sync_with_stdio(true);
+
+	// Redirect the CRT standard input, output, and error handles to the console
+	freopen_s(&CInputHandle, "CONIN$", "r", stdin);
+	freopen_s(&COutputHandle, "CONOUT$", "w", stdout);
+	freopen_s(&CErrorHandle, "CONOUT$", "w", stderr);
+
+	// Clear the error state for each of the C++ standard stream objects.
+	std::wcout.clear();
+	std::cout.clear();
+	std::wcerr.clear();
+	std::cerr.clear();
+	std::wcin.clear();
+	std::cin.clear();
+}
+
+static BOOL firstCallToDebugPrint = TRUE;
+void _DebugPrint(const char *file, int line, const char *format, ...)
+{
+	if (firstCallToDebugPrint)
+	{
+		firstCallToDebugPrint = FALSE;
+		printf("\n");
+	}
+	printf("%s(%d): ", file, line);
+	va_list argptr;
+	va_start(argptr, format);
+	vfprintf(stderr, format, argptr);
+	va_end(argptr);
+}
+
+#define DebugPrint(format, ...) _DebugPrint(__FILE__, __LINE__, format, __VA_ARGS__)
+
 int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 				   LPSTR lpszArgs, int nWinMode)
 {
 	MSG msg;
+
+	RedirectIOToConsole();
+	DebugPrint("test\n");
+	DebugPrint("test %d\n", 53);
+	DebugPrint("test\n");
 
 	hInstance = hThisInst;
 
@@ -1207,6 +1279,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 	icex.dwICC = ICC_LINK_CLASS | ICC_LISTVIEW_CLASSES | ICC_PAGESCROLLER_CLASS | ICC_PROGRESS_CLASS | ICC_STANDARD_CLASSES | ICC_TAB_CLASSES | ICC_TREEVIEW_CLASSES | ICC_UPDOWN_CLASS | ICC_USEREX_CLASSES | ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&icex);
 
+	// build the ini file name
 	GetModuleFileName(NULL, iniFile, MAX_PATH);
 	iniFile[wcslen(iniFile) - 4] = '\0';
 	wcscat_s(iniFile, MAX_PATH, L".ini");
