@@ -272,8 +272,8 @@ LPCWSTR getModSpecialKey(UINT vk, BOOL mod = FALSE)
 		if (!mod && HIBYTE(sk[0]) == 0)
 		{
 			// if the special key is not used with modifierkey, and has not been replaced with visible symbol
-			// then surround it with <>
-			swprintf(modsk, 64, L"<%s>", sk);
+			// then surround it with <> // this is like arrow and esc keys
+			swprintf(modsk, 64, L"%s", sk);
 			// addBracket(modsk);
 		}
 		else
