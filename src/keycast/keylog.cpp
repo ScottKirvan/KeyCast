@@ -136,31 +136,31 @@ struct Key specialKeys[] = {
 size_t nSpecialKeys = sizeof(specialKeys) / sizeof(Key);
 
 LPCWSTR mouseActions[] = {
-	L"MouseMove",
-	L"LButtonDown",
-	L"LButtonUp",
-	L"LButtonDBLCLK",
-	L"RButtonDown",
-	L"RButtonUp",
-	L"RButtonDBLCLK",
-	L"MButtonDown",
-	L"MButtonUp",
-	L"MButtonDBLCLK",
-	L"MouseWheel",
-	L"XButtonDown",
-	L"XButtonUp",
-	L"XButtonDBLCLK",
-	L"MouseHWheel"};
+	L"MouseMove ",
+	L"LButtonDown ",
+	L"LButtonUp ",
+	L"LButtonDBLCLK ",
+	L"RButtonDown ",
+	L"RButtonUp ",
+	L"RButtonDBLCLK ",
+	L"MButtonDown ",
+	L"MButtonUp ",
+	L"MButtonDBLCLK ",
+	L"MouseWheel ",
+	L"XButtonDown ",
+	L"XButtonUp ",
+	L"XButtonDBLCLK ",
+	L"MouseHWheel "};
 
 LPCWSTR mouseClicks[] = {
-	L"Left Mouse",
-	L"Right Mouse",
-	L"Middle Mouse"};
+	L"Left Mouse ",
+	L"Right Mouse ",
+	L"Middle Mouse "};
 
 LPCWSTR mouseDblClicks[] = {
-	L"LDblClick",
-	L"RDblClick",
-	L"MDblClick"};
+	L"LDblClick ",
+	L"RDblClick ",
+	L"MDblClick "};
 
 size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
