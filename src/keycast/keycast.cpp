@@ -70,7 +70,7 @@ UINT tcKey = 0x42;			// 0x42 is 'b'  // Toggle Capture - b
 Color clearColor(0, 127, 127, 127);
 #define BRANDINGMAX 256
 WCHAR branding[BRANDINGMAX]; // Branding
-WCHAR comboChars[4];
+// WCHAR comboChars[4];
 POINT deskOrigin;
 
 #define MAXLABELS 60
@@ -618,7 +618,7 @@ void saveSettings()
 	writeSettingInt(L"tcModifiers", tcModifiers);
 	writeSettingInt(L"tcKey", tcKey);
 	WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
-	WritePrivateProfileString(L"KeyCast", L"comboChars", comboChars, iniFile);
+	// WritePrivateProfileString(L"KeyCast", L"comboChars", comboChars, iniFile);
 }
 void fixDeskOrigin()
 {
@@ -681,7 +681,7 @@ void loadSettings()
 	tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
 	tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
 	GetPrivateProfileString(L"KeyCast", L"branding", L"", branding, BRANDINGMAX, iniFile);
-	GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
+	// GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
 	memset(&labelSettings.font, 0, sizeof(labelSettings.font));
 	labelSettings.font.lfCharSet = DEFAULT_CHARSET;
 	labelSettings.font.lfHeight = -16;
@@ -718,7 +718,7 @@ void renderSettingsData(HWND hwndDlg)
 	swprintf(tmp, 256, L"%d", maximumLines);
 	SetDlgItemText(hwndDlg, IDC_MAXIMUMLINES, tmp);
 	SetDlgItemText(hwndDlg, IDC_BRANDING, branding);
-	SetDlgItemText(hwndDlg, IDC_COMBSCHEME, comboChars);
+	// SetDlgItemText(hwndDlg, IDC_COMBSCHEME, comboChars);
 	// CheckDlgButton(hwndDlg, IDC_VISIBLESHIFT, visibleShift ? BST_CHECKED : BST_UNCHECKED);
 	// CheckDlgButton(hwndDlg, IDC_VISIBLEMODIFIER, visibleModifier ? BST_CHECKED : BST_UNCHECKED);
 	// CheckDlgButton(hwndDlg, IDC_MOUSECAPTURING, mouseCapturing ? BST_CHECKED : BST_UNCHECKED);
@@ -943,7 +943,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 				maximumLines = 1;
 			}
 			GetDlgItemText(hwndDlg, IDC_BRANDING, branding, BRANDINGMAX);
-			GetDlgItemText(hwndDlg, IDC_COMBSCHEME, comboChars, 4);
+			// GetDlgItemText(hwndDlg, IDC_COMBSCHEME, comboChars, 4);
 			// visibleShift = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_VISIBLESHIFT));
 			// visibleModifier = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_VISIBLEMODIFIER));
 			// mouseCapturing = (BST_CHECKED == IsDlgButtonChecked(hwndDlg, IDC_MOUSECAPTURING));

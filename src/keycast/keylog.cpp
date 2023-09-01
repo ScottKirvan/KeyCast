@@ -171,7 +171,7 @@ size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 // extern BOOL keyAutoRepeat;
 // extern BOOL mergeMouseActions;
 // extern BOOL onlyCommandKeys;
-extern WCHAR comboChars[3];
+// extern WCHAR comboChars[3];
 extern BOOL positioning;
 extern WCHAR deferredLabel[64];
 HHOOK kbdhook, moshook;
@@ -229,6 +229,8 @@ LPCWSTR getSpecialKey(UINT vk)
 	swprintf(unknown, 32, L"0x%02x", vk);
 	return unknown;
 }
+
+/*
 void addBracket(LPWSTR str)
 {
 	WCHAR tmp[64];
@@ -238,6 +240,8 @@ void addBracket(LPWSTR str)
 		swprintf(str, 64, L"%c%s%c", comboChars[0], tmp, comboChars[2]);
 	}
 }
+*/
+
 LPCWSTR getModSpecialKey(UINT vk, BOOL mod = FALSE)
 {
 	static WCHAR modsk[64];
@@ -269,8 +273,8 @@ LPCWSTR getModSpecialKey(UINT vk, BOOL mod = FALSE)
 		{
 			// if the special key is not used with modifierkey, and has not been replaced with visible symbol
 			// then surround it with <>
-			swprintf(modsk, 64, L"%s", sk);
-			addBracket(modsk);
+			swprintf(modsk, 64, L"<%s>", sk);
+			// addBracket(modsk);
 		}
 		else
 		{
@@ -381,14 +385,14 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 			else if (!wcsstr(modifierkey, ck))
 			{
 				wcscpy_s(tmp, 64, modifierkey);
-				swprintf(modifierkey, 64, L"%s %c %s", tmp, comboChars[1], ck);
+				swprintf(modifierkey, 64, L"%s+ %s", tmp, ck);
 			}
 			// this is the case where there's a modifier key pressed but doesn't modify any other key
 			// in screencast keys, this shows up next to the mouse image, not in the text list
 			if (!modifierUsed /* && visibleModifier */)
 			{
-				swprintf(c, 64, L"%s", modifierkey);
-				addBracket(c);
+				swprintf(c, 64, L"[%s]", modifierkey);
+				// addBracket(c);
 				if (lastvk == k.vkCode)
 				{
 					showText(c, 2);
@@ -422,8 +426,8 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 				if (mod)
 				{
 					fin = 1;
-					swprintf(tmp, 64, L"%s %c %s", modifierkey, comboChars[1], theKey);
-					addBracket(tmp);
+					swprintf(tmp, 64, L"%s+ %s", modifierkey, theKey);
+					// addBracket(tmp);
 					theKey = tmp;
 				}
 				// if (fin || !onlyCommandKeys)
@@ -558,20 +562,20 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 				if (modifierkey[0] != '\0')
 				{
 					modifierUsed = TRUE;
-					swprintf(tmp, 64, L"%s %c %s", modifierkey, comboChars[1], c);
-					addBracket(tmp);
+					swprintf(tmp, 64, L"%s+ %s", modifierkey, c);
+					// addBracket(tmp);
 					showText(tmp, behavior);
 				}
 				else if (GetKeyState(VK_SHIFT) < 0)
 				{
-					swprintf(tmp, 64, L"Shift %c %s", comboChars[1], c);
-					addBracket(tmp);
+					swprintf(tmp, 64, L"Shift +%s", c);
+					// addBracket(tmp);
 					showText(tmp, behavior);
 				}
 				else /* if (!mouseCapturingMod) */
 				{
 					swprintf(tmp, 64, L"%s", c);
-					addBracket(tmp);
+					// addBracket(tmp);
 					showText(tmp, behavior);
 				}
 
