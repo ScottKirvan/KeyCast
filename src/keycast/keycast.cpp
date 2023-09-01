@@ -634,16 +634,16 @@ void fixDeskOrigin()
 void loadSettings()
 {
 	labelSettings.keyStrokeDelay = GetPrivateProfileInt(L"KeyCast", L"keyStrokeDelay", 500, iniFile);
-	labelSettings.lingerTime = GetPrivateProfileInt(L"KeyCast", L"lingerTime", 1200, iniFile);
-	labelSettings.fadeDuration = GetPrivateProfileInt(L"KeyCast", L"fadeDuration", 310, iniFile);
+	labelSettings.lingerTime = GetPrivateProfileInt(L"KeyCast", L"lingerTime", 3600, iniFile);
+	labelSettings.fadeDuration = GetPrivateProfileInt(L"KeyCast", L"fadeDuration", 200, iniFile);
 	labelSettings.bgColor = GetPrivateProfileInt(L"KeyCast", L"bgColor", RGB(75, 75, 75), iniFile);
 	labelSettings.textColor = GetPrivateProfileInt(L"KeyCast", L"textColor", RGB(255, 255, 255), iniFile);
-	labelSettings.bgOpacity = GetPrivateProfileInt(L"KeyCast", L"bgOpacity", 200, iniFile);
+	labelSettings.bgOpacity = GetPrivateProfileInt(L"KeyCast", L"bgOpacity", 0, iniFile);
 	labelSettings.textOpacity = GetPrivateProfileInt(L"KeyCast", L"textOpacity", 255, iniFile);
-	labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCast", L"borderOpacity", 200, iniFile);
+	labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCast", L"borderOpacity", 0, iniFile);
 	labelSettings.borderColor = GetPrivateProfileInt(L"KeyCast", L"borderColor", RGB(0, 128, 255), iniFile);
 	labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 8, iniFile);
-	labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCast", L"cornerSize", 2, iniFile);
+	labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCast", L"cornerSize", 0, iniFile);
 	// labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
 	maximumLines = GetPrivateProfileInt(L"KeyCast", L"maximumLines", 10, iniFile);
 	if (maximumLines == 0)
@@ -680,17 +680,17 @@ void loadSettings()
 	*/
 	tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
 	tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
-	GetPrivateProfileString(L"KeyCast", L"branding", L"Hi there, press any key to try, double click to configure.", branding, BRANDINGMAX, iniFile);
-	GetPrivateProfileString(L"KeyCast", L"comboChars", L"<->", comboChars, 4, iniFile);
+	GetPrivateProfileString(L"KeyCast", L"branding", L"", branding, BRANDINGMAX, iniFile);
+	GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
 	memset(&labelSettings.font, 0, sizeof(labelSettings.font));
 	labelSettings.font.lfCharSet = DEFAULT_CHARSET;
-	labelSettings.font.lfHeight = -37;
+	labelSettings.font.lfHeight = -16;
 	labelSettings.font.lfPitchAndFamily = DEFAULT_PITCH;
-	labelSettings.font.lfWeight = FW_BLACK;
+	labelSettings.font.lfWeight = FW_REGULAR;
 	labelSettings.font.lfOutPrecision = OUT_DEFAULT_PRECIS;
 	labelSettings.font.lfClipPrecision = CLIP_DEFAULT_PRECIS;
 	labelSettings.font.lfQuality = ANTIALIASED_QUALITY;
-	wcscpy_s(labelSettings.font.lfFaceName, LF_FACESIZE, TEXT("Arial Black"));
+	wcscpy_s(labelSettings.font.lfFaceName, LF_FACESIZE, TEXT("Tahoma"));
 	GetPrivateProfileStruct(L"KeyCast", L"labelFont", &labelSettings.font, sizeof(labelSettings.font), iniFile);
 }
 void renderSettingsData(HWND hwndDlg)
