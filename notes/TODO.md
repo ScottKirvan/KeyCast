@@ -2,7 +2,7 @@ Overview
 --------
 Here's what I think I might want to do with this:
 
-I think I may want to make this project just monitor the ini file, and when it sees an update, it reloads the ini and updates all of it's settings.  This way, any application, or number of applications, could make changes while the keycaster is running.
+I think I may want to make this project just monitor the ini file, and when it sees an update, it reloads the ini and updates all of it's settings.  This way, any application, or any number of applications, could make changes while the keycaster is running.
 
 For example:  I want to do tutorial videos using unreal.  Unreal has a pretty good config system already, and I already have a plugin that has some features that I use for the tutorials, so I'm thinking I'll add a button to launch the keycaster and put all of the settings in the same utility plugin.
 
@@ -13,7 +13,7 @@ KeyCast's own settings panel probably won't stay updated, so I may just decouple
 
 TODO
 ----
-- [ ] copy the screencast keys mouse behavior (the image, etc.)
+- [ ] copy the screencast keys mouse behavior (the image, etc.) and simplicity
 - [ ] figure out what the different settings do, document them, and make their behavior clearer.
 - [ ] change the defaults to something less gaudy
 - [ ] clean up the code and document it inline as much as possible.
@@ -27,6 +27,9 @@ TODO
 - [ ] align left, center, right
 - [ ] add an x, y offset (let it be negative, don't let it crash)
 - [ ] replace the branding text stuff with a user definable image that can be loaded -- a bit more useful for the streamers, I think.
+- [ ] change the ini file color formats to:  textColor=(R=1.0,G=0.0,B=0.5,A=1.0)
+- [ ] make the font human readable in the ini
+
 
 In Progress
 -----------
