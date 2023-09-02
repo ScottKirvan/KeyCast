@@ -1,11 +1,9 @@
 // Copyright © 2014 Brook Hong. All Rights Reserved.
 //
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <Windows.h>
-
 #include "keylog.h"
+#include <stdio.h>
+#include "MyStaticVar.h"
 
 struct Key
 {
@@ -314,7 +312,6 @@ void cleanModifier(UINT vk, LPWSTR modifierkeys)
 	}
 }
 
-#include "MyStaticVar.h"
 static WCHAR modifierkey[64] = L"\0";
 static BOOL modifierUsed = FALSE;
 

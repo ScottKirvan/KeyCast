@@ -1,6 +1,8 @@
 #ifndef _KEYCASTSETTINGS_H
 #define _KEYCASTSETTINGS_H
 
+#include <windows.h>
+
 struct LabelSettings
 {
     DWORD keyStrokeDelay;

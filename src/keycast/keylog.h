@@ -4,6 +4,8 @@
 #ifndef KEYLOG_H_INCLUDED
 #define KEYLOG_H_INCLUDED
 
+#include <Windows.h>
+
 extern HHOOK kbdhook;
 extern HHOOK moshook;
 

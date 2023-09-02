@@ -1,15 +1,10 @@
 // Copyright © 2014 Brook Hong. All Rights Reserved.
 //
 
-// msbuild /p:platform=win32 /p:Configuration=Release
-// msbuild keycast.vcxproj /t:Clean
-// rc keycast.rc && cl -DUNICODE -D_UNICODE keycast.cpp keylog.cpp keycast.res user32.lib shell32.lib gdi32.lib Comdlg32.lib comctl32.lib
-
 #include <windows.h>
-#include <windowsx.h>
 #include <Commctrl.h>
 #include <stdio.h>
-#include <DbgHelp.h>
+#include <DbgHelp.h> // used for minidump and exception handling
 #pragma comment(lib, "DbgHelp.lib")
 
 #include <gdiplus.h>
@@ -20,6 +15,7 @@ using namespace Gdiplus;
 #include "DebugPrint.h"
 #include "stamp.h"
 #include "keycastSettings.h"
+#include "keylog.h"
 
 CTimer showTimer;
 CTimer previewTimer;
@@ -85,9 +81,6 @@ DWORD labelCount = 0;
 RECT desktopRect;
 SIZE canvasSize;
 POINT canvasOrigin;
-
-#include "keycast.h"
-#include "keylog.h"
 
 WCHAR *szWinName = L"KeyCast";
 HWND hMainWnd;
