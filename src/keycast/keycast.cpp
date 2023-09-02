@@ -580,40 +580,47 @@ HWND CreateToolTip(HWND hDlg, int toolID, LPWSTR pszText)
 
 	return hwndTip;
 }
-void writeSettingInt(LPCTSTR lpKeyName, DWORD dw)
+void writeSettingInt(LPCTSTR lpSection, LPCTSTR lpKey, DWORD dwValue)
 {
 	WCHAR tmp[256];
-	swprintf(tmp, 256, L"%d", dw);
-	WritePrivateProfileString(L"KeyCast", lpKeyName, tmp, iniFile);
+	swprintf(tmp, 256, L"%d", dwValue);
+	WritePrivateProfileString(L"KeyCast", lpKey, tmp, iniFile);
 }
 void saveSettings()
 {
-	// DebugPrint("void saveSettings()\n");
-	// DebugPrint("iniFile = %ls\n", iniFile);
-	writeSettingInt(L"keyStrokeDelay", labelSettings.keyStrokeDelay);
-	writeSettingInt(L"lingerTime", labelSettings.lingerTime);
-	writeSettingInt(L"fadeDuration", labelSettings.fadeDuration);
-	writeSettingInt(L"bgColor", labelSettings.bgColor);
-	writeSettingInt(L"textColor", labelSettings.textColor);
+	DebugPrint("void saveSettings()\n");
 	WritePrivateProfileStruct(L"KeyCast", L"labelFont", (LPVOID)&labelSettings.font, sizeof(labelSettings.font), iniFile);
-	writeSettingInt(L"bgOpacity", labelSettings.bgOpacity);
-	writeSettingInt(L"textOpacity", labelSettings.textOpacity);
-	writeSettingInt(L"borderOpacity", labelSettings.borderOpacity);
-	writeSettingInt(L"borderColor", labelSettings.borderColor);
-	writeSettingInt(L"borderSize", labelSettings.borderSize);
-	// DebugPrint("borderSize = %d\n", labelSettings.borderSize);
-	writeSettingInt(L"cornerSize", labelSettings.cornerSize);
+	writeSettingInt(L"KeyCast", L"textColor", labelSettings.textColor);
+	writeSettingInt(L"KeyCast", L"textOpacity", labelSettings.textOpacity);
+
+	writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
+	writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
+
+	writeSettingInt(L"KeyCast", L"borderSize", labelSettings.borderSize);
+	writeSettingInt(L"KeyCast", L"borderColor", labelSettings.borderColor);
+	writeSettingInt(L"KeyCast", L"borderOpacity", labelSettings.borderOpacity);
+	writeSettingInt(L"KeyCast", L"cornerSize", labelSettings.cornerSize);
+
+	writeSettingInt(L"KeyCast", L"keyStrokeDelay", labelSettings.keyStrokeDelay);
+	writeSettingInt(L"KeyCast", L"lingerTime", labelSettings.lingerTime);
+	writeSettingInt(L"KeyCast", L"fadeDuration", labelSettings.fadeDuration);
+	writeSettingInt(L"KeyCast", L"maximumLines", maximumLines);
+
+	writeSettingInt(L"KeyCast", L"alignment", alignment);
+	writeSettingInt(L"KeyCast", L"offsetX", deskOrigin.x);
+	writeSettingInt(L"KeyCast", L"offsetY", deskOrigin.y);
+
+	writeSettingInt(L"KeyCast", L"tcModifiers", tcModifiers);
+	writeSettingInt(L"KeyCast", L"tcKey", tcKey);
+	WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
+
 	// writeSettingInt(L"labelSpacing", labelSpacing);
-	writeSettingInt(L"maximumLines", maximumLines);
-	writeSettingInt(L"offsetX", deskOrigin.x);
-	writeSettingInt(L"offsetY", deskOrigin.y);
-	// writeSettingInt(L"visibleShift", visibleShift);
-	// writeSettingInt(L"visibleModifier", visibleModifier);
-	// writeSettingInt(L"mouseCapturing", mouseCapturing);
-	// writeSettingInt(L"mouseCapturingMod", mouseCapturingMod);
-	// writeSettingInt(L"keyAutoRepeat", keyAutoRepeat);
-	// writeSettingInt(L"mergeMouseActions", mergeMouseActions);
-	writeSettingInt(L"alignment", alignment);
+	//  writeSettingInt(L"visibleShift", visibleShift);
+	//  writeSettingInt(L"visibleModifier", visibleModifier);
+	//  writeSettingInt(L"mouseCapturing", mouseCapturing);
+	//  writeSettingInt(L"mouseCapturingMod", mouseCapturingMod);
+	//  writeSettingInt(L"keyAutoRepeat", keyAutoRepeat);
+	//  writeSettingInt(L"mergeMouseActions", mergeMouseActions);
 	// writeSettingInt(L"onlyCommandKeys", onlyCommandKeys);
 	// writeSettingInt(L"draggableLabel", draggableLabel);
 	/*
@@ -623,40 +630,27 @@ void saveSettings()
 	}
 	else
 	{
-		*/
 	SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
-	/*
 	}
 	*/
-	writeSettingInt(L"tcModifiers", tcModifiers);
-	writeSettingInt(L"tcKey", tcKey);
-	WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
 	// WritePrivateProfileString(L"KeyCast", L"comboChars", comboChars, iniFile);
 }
 
 void fixDeskOrigin()
 {
-	// DebugPrint("void fixDeskOrigin()\n");
-	// DebugPrint("deskOrigin.x = %d, deskOrigin.y = %d, desktopRect.left = %d, desktopRect.top = %d, desktopRect.right = %d, desktopRect.bottom = %d\n", deskOrigin.x, deskOrigin.y, desktopRect.left, desktopRect.top, desktopRect.right, desktopRect.bottom);
-	// DebugPrint("labelSettings.borderSize = %d\n", labelSettings.borderSize);
 	if ((deskOrigin.x - 2) >= desktopRect.right || (deskOrigin.x - 2) <= (desktopRect.left + labelSettings.borderSize))
 	{
-		// DebugPrint("A\n");
 		deskOrigin.x = desktopRect.right - labelSettings.borderSize;
 	}
 	if ((deskOrigin.y - 2) >= desktopRect.bottom || (deskOrigin.y - 2) <= (desktopRect.top + labelSettings.borderSize))
 	{
-
-		// DebugPrint("B\n");
 		deskOrigin.y = desktopRect.bottom;
 	}
-	// DebugPrint("deskOrigin.x = %d, deskOrigin.y = %d\n", deskOrigin.x, deskOrigin.y);
 }
 
 void loadSettings()
 {
 	// DebugPrint("void loadSettings()\n");
-	// DebugPrint("iniFile = %ls\n", iniFile);
 	labelSettings.keyStrokeDelay = GetPrivateProfileInt(L"KeyCast", L"keyStrokeDelay", 500, iniFile);
 	labelSettings.lingerTime = GetPrivateProfileInt(L"KeyCast", L"lingerTime", 3600, iniFile);
 	labelSettings.fadeDuration = GetPrivateProfileInt(L"KeyCast", L"fadeDuration", 200, iniFile);
@@ -791,11 +785,12 @@ void getLabelSettings(HWND hwndDlg, LabelSettings &lblSettings)
 	GetDlgItemText(hwndDlg, IDC_CORNERSIZE, tmp, 256);
 	lblSettings.cornerSize = _wtoi(tmp);
 }
-DWORD previewTime = 0;
+// DWORD previewTime = 0;
 #define PREVIEWTIMER_INTERVAL 5
 
 static void previewLabel()
 {
+	/*
 	// // DebugPrint("static void previewLabel()\n");
 	RECT rt = {12, 58, 222, 238};
 
@@ -856,6 +851,7 @@ static void previewLabel()
 	DeleteObject(memBitmap);
 	DeleteObject(hFont);
 	ReleaseDC(hDlgSettings, hdc);
+	*/
 }
 
 BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -1021,6 +1017,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 	}
 	return FALSE;
 }
+
 LRESULT CALLBACK DraggableWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	static POINT s_last_mouse;
@@ -1287,11 +1284,8 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 		return 0;
 	}
 
-	// DebugPrint("deskOrigin.x = %d, deskOrigin.y = %d\n", deskOrigin.x, deskOrigin.y);
 	loadSettings();
-	// DebugPrint("deskOrigin.x = %d, deskOrigin.y = %d\n", deskOrigin.x, deskOrigin.y);
 	saveSettings(); // save this right back out, in case one doesn't exist - this way we have a default ini file
-	// DebugPrint("deskOrigin.x = %d, deskOrigin.y = %d\n", deskOrigin.x, deskOrigin.y);
 
 	updateCanvasSize(deskOrigin); // you call this to set the default origin
 	hDlgSettings = CreateDialog(hThisInst, MAKEINTRESOURCE(IDD_SK_DLGSETTINGS), NULL, (DLGPROC)SettingsWndProc);
