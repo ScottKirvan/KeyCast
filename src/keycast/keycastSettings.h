@@ -6,7 +6,7 @@ struct LabelSettings
     DWORD keyStrokeDelay;
     DWORD lingerTime;
     DWORD fadeDuration;
-    LOGFONT font;
+    LOGFONT textFont;
     COLORREF bgColor, textColor, borderColor;
     DWORD bgOpacity, textOpacity, borderOpacity;
     int borderSize;

@@ -436,7 +436,7 @@ void prepareLabels()
 {
 	// DebugPrint("void prepareLabels()\n");
 	HDC hdc = GetDC(hMainWnd);
-	HFONT hlabelFont = CreateFontIndirect(&labelSettings.font);
+	HFONT hlabelFont = CreateFontIndirect(&labelSettings.textFont);
 	HFONT hFontOld = (HFONT)SelectObject(hdc, hlabelFont);
 	DeleteObject(hFontOld);
 
@@ -595,17 +595,18 @@ void writeSettingInt(LPCTSTR lpSection, LPCTSTR lpKey, DWORD dwValue)
 }
 void saveSettings()
 {
-	DebugPrint("void saveSettings()\n");
-	WritePrivateProfileStruct(L"KeyCast", L"labelFont", (LPVOID)&labelSettings.font, sizeof(labelSettings.font), iniFile);
+	// DebugPrint("void saveSettings()\n");
+	WritePrivateProfileStruct(L"KeyCast", L"textFont", (LPVOID)&labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
 	writeSettingInt(L"KeyCast", L"textColor", labelSettings.textColor);
 	writeSettingInt(L"KeyCast", L"textOpacity", labelSettings.textOpacity);
-
-	writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
-	writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
 
 	writeSettingInt(L"KeyCast", L"borderSize", labelSettings.borderSize);
 	writeSettingInt(L"KeyCast", L"borderColor", labelSettings.borderColor);
 	writeSettingInt(L"KeyCast", L"borderOpacity", labelSettings.borderOpacity);
+
+	writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
+	writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
+
 	writeSettingInt(L"KeyCast", L"cornerSize", labelSettings.cornerSize);
 
 	writeSettingInt(L"KeyCast", L"keyStrokeDelay", labelSettings.keyStrokeDelay);
@@ -707,18 +708,18 @@ void loadSettings()
 	*/
 	tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
 	tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
-	GetPrivateProfileString(L"KeyCast", L"branding", L"", branding, BRANDINGMAX, iniFile);
+	GetPrivateProfileString(L"KeyCast", L"branding", L"Exit", branding, BRANDINGMAX, iniFile);
 	// GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
-	memset(&labelSettings.font, 0, sizeof(labelSettings.font));
-	labelSettings.font.lfCharSet = DEFAULT_CHARSET;
-	labelSettings.font.lfHeight = -16;
-	labelSettings.font.lfPitchAndFamily = DEFAULT_PITCH;
-	labelSettings.font.lfWeight = FW_REGULAR;
-	labelSettings.font.lfOutPrecision = OUT_DEFAULT_PRECIS;
-	labelSettings.font.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-	labelSettings.font.lfQuality = ANTIALIASED_QUALITY;
-	wcscpy_s(labelSettings.font.lfFaceName, LF_FACESIZE, TEXT("Tahoma"));
-	GetPrivateProfileStruct(L"KeyCast", L"labelFont", &labelSettings.font, sizeof(labelSettings.font), iniFile);
+	memset(&labelSettings.textFont, 0, sizeof(labelSettings.textFont));
+	labelSettings.textFont.lfCharSet = DEFAULT_CHARSET;
+	labelSettings.textFont.lfHeight = -16;
+	labelSettings.textFont.lfPitchAndFamily = DEFAULT_PITCH;
+	labelSettings.textFont.lfWeight = FW_REGULAR;
+	labelSettings.textFont.lfOutPrecision = OUT_DEFAULT_PRECIS;
+	labelSettings.textFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
+	labelSettings.textFont.lfQuality = ANTIALIASED_QUALITY;
+	wcscpy_s(labelSettings.textFont.lfFaceName, LF_FACESIZE, TEXT("Tahoma"));
+	GetPrivateProfileStruct(L"KeyCast", L"textFont", &labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
 }
 void renderSettingsData(HWND hwndDlg)
 {
@@ -835,7 +836,7 @@ static void previewLabel()
 	g.SetTextRenderingHint(TextRenderingHintAntiAlias);
 
 	WCHAR text[] = L"BH";
-	HFONT hFont = CreateFontIndirect(&previewLabelSettings.font);
+	HFONT hFont = CreateFontIndirect(&previewLabelSettings.textFont);
 	SelectObject(memDC, hFont);
 	Font font(memDC, hFont);
 
@@ -904,7 +905,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			cf.lStructSize = sizeof(CHOOSEFONT);
 			cf.hwndOwner = hwndDlg;
 			cf.hDC = NULL;
-			cf.lpLogFont = &previewLabelSettings.font;
+			cf.lpLogFont = &previewLabelSettings.textFont;
 			cf.iPointSize = 0;
 			cf.Flags = CF_INITTOLOGFONTSTRUCT | CF_SCREENFONTS | CF_EFFECTS;
 			cf.rgbColors = 0;
