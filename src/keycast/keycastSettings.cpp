@@ -1,5 +1,6 @@
 #include "keycastSettings.h"
 #include "keycast.h"
+#include <stdio.h>
 
 LabelSettings labelSettings, previewLabelSettings;
 WCHAR iniFile[MAX_PATH];
@@ -12,15 +13,42 @@ UINT tcModifiers = MOD_ALT;  // Toggle Capture - Alt
 UINT tcKey = 0x42;           // 0x42 is 'b'  // Toggle Capture - b
 WCHAR branding[BRANDINGMAX]; // Branding
 
-/*
-void GetWorkAreaByOrigin(const POINT &pt, MONITORINFO &mi)
+void writeSettingInt(LPCTSTR lpSection, LPCTSTR lpKey, DWORD dwValue)
 {
-    RECT rc = {pt.x - 1, pt.y - 1, pt.x + 1, pt.y + 1};
-    HMONITOR hMonitor = MonitorFromRect(&rc, MONITOR_DEFAULTTONEAREST);
-    mi.cbSize = sizeof(mi);
-    GetMonitorInfo(hMonitor, &mi);
+    WCHAR tmp[256];
+    swprintf(tmp, 256, L"%d", dwValue);
+    WritePrivateProfileString(L"KeyCast", lpKey, tmp, iniFile);
 }
-*/
+
+void saveSettings()
+{
+    // DebugPrint("void saveSettings()\n");
+    WritePrivateProfileStruct(L"KeyCast", L"textFont", (LPVOID)&labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
+    writeSettingInt(L"KeyCast", L"textColor", labelSettings.textColor);
+    writeSettingInt(L"KeyCast", L"textOpacity", labelSettings.textOpacity);
+
+    writeSettingInt(L"KeyCast", L"borderSize", labelSettings.borderSize);
+    writeSettingInt(L"KeyCast", L"borderColor", labelSettings.borderColor);
+    writeSettingInt(L"KeyCast", L"borderOpacity", labelSettings.borderOpacity);
+
+    writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
+    writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
+
+    writeSettingInt(L"KeyCast", L"cornerSize", labelSettings.cornerSize);
+
+    writeSettingInt(L"KeyCast", L"keyStrokeDelay", labelSettings.keyStrokeDelay);
+    writeSettingInt(L"KeyCast", L"lingerTime", labelSettings.lingerTime);
+    writeSettingInt(L"KeyCast", L"fadeDuration", labelSettings.fadeDuration);
+    writeSettingInt(L"KeyCast", L"maximumLines", maximumLines);
+
+    writeSettingInt(L"KeyCast", L"alignment", alignment);
+    writeSettingInt(L"KeyCast", L"offsetX", deskOrigin.x);
+    writeSettingInt(L"KeyCast", L"offsetY", deskOrigin.y);
+
+    writeSettingInt(L"KeyCast", L"tcModifiers", tcModifiers);
+    writeSettingInt(L"KeyCast", L"tcKey", tcKey);
+    WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
+}
 
 void loadSettings(HWND hMainWnd)
 {
@@ -51,31 +79,11 @@ void loadSettings(HWND hMainWnd)
     CopyMemory(&desktopRect, &mi.rcWork, sizeof(RECT));
     MoveWindow(hMainWnd, desktopRect.left, desktopRect.top, 1, 1, TRUE);
     fixDeskOrigin();
-    // visibleShift = GetPrivateProfileInt(L"KeyCast", L"visibleShift", 0, iniFile);
-    // visibleModifier = GetPrivateProfileInt(L"KeyCast", L"visibleModifier", 1, iniFile);
-    // mouseCapturing = GetPrivateProfileInt(L"KeyCast", L"mouseCapturing", 1, iniFile);
-    //  mouseCapturingMod = GetPrivateProfileInt(L"KeyCast", L"mouseCapturingMod", 0, iniFile);
-    // keyAutoRepeat = GetPrivateProfileInt(L"KeyCast", L"keyAutoRepeat", 1, iniFile);
-    // mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
     alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 0, iniFile);
-    // onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
-    // draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
-    /*
-    if (draggableLabel)
-    {
-        SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
-    }
-    else
-    {
-        */
     SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
-    /*
-    }
-    */
     tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
     tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
     GetPrivateProfileString(L"KeyCast", L"branding", L"Exit", branding, BRANDINGMAX, iniFile);
-    // GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
     memset(&labelSettings.textFont, 0, sizeof(labelSettings.textFont));
     labelSettings.textFont.lfCharSet = DEFAULT_CHARSET;
     labelSettings.textFont.lfHeight = -16;

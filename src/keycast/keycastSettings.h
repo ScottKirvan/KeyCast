@@ -29,6 +29,6 @@ extern UINT tcModifiers; // Toggle Capture - Alt
 extern UINT tcKey;       // 0x42 is 'b'  // Toggle Capture - b
 
 void loadSettings(HWND hMainWnd);
-void GetWorkAreaByOrigin(const POINT &pt, MONITORINFO &mi);
+void saveSettings();
 
 #endif // _KEYCASTSETTINGS_H

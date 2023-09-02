@@ -38,43 +38,8 @@ struct KeyLabel
 	}
 };
 
-/*
-struct LabelSettings
-{
-	DWORD keyStrokeDelay;
-	DWORD lingerTime;
-	DWORD fadeDuration;
-	LOGFONT font;
-	COLORREF bgColor, textColor, borderColor;
-	DWORD bgOpacity, textOpacity, borderOpacity;
-	int borderSize;
-	int cornerSize;
-};
-*/
-// extern WCHAR *iniFile;
-// extern LabelSettings labelSettings, previewLabelSettings;
-// extern DWORD maximumLines;
-// extern DWORD labelCount;
-// extern POINT deskOrigin;
-// extern RECT desktopRect;
-// extern int alignment;
-// extern UINT tcModifiers; // Toggle Capture - Alt
-// extern UINT tcKey;		 // 0x42 is 'b'  // Toggle Capture - b
-// #define BRANDINGMAX 256
-// extern WCHAR *branding;
-
-// DWORD labelSpacing;				// Label Spacing
-// BOOL visibleShift = TRUE; // // Shift as Modifier Key
-// BOOL visibleModifier = TRUE;	// Display  Standalone Modifier Key - this is displayed next to the mouse in screencastkeys, and only shows up in the  normal key display when used with a key to modify
-// BOOL mouseCapturing = TRUE; // Mouse Action?
-//  BOOL mouseCapturingMod = FALSE; // Mouse Only With Modifier
-// BOOL keyAutoRepeat = TRUE;		// Hold down to repeat
-// BOOL mergeMouseActions = TRUE; // Detect Click / DblClick
-//  BOOL onlyCommandKeys = FALSE; // Only Command Keys
 BOOL positioning = FALSE;
-// BOOL draggableLabel = FALSE; // Draggable Label
 Color clearColor(0, 127, 127, 127);
-// WCHAR comboChars[4];
 
 #define MAXLABELS 60
 KeyLabel keyLabels[MAXLABELS];
@@ -85,7 +50,6 @@ WCHAR *szWinName = L"KeyCast";
 HWND hMainWnd;
 HWND hDlgSettings;
 RECT settingsDlgRect;
-// HWND hWndStamp;
 HINSTANCE hInstance;
 Graphics *gCanvas = NULL;
 Font *fontPlus = NULL;
@@ -97,54 +61,6 @@ Font *fontPlus = NULL;
 #define MENU_RESTORE 34
 
 void showText(LPCWSTR text, int behavior);
-
-/*
-void stamp(HWND hwnd, LPCWSTR text)
-{
-	// DebugPrint("void stamp(HWND hwnd, LPCWSTR text)\n");
-	RECT rt;
-	GetWindowRect(hwnd, &rt);
-	HDC hdc = GetDC(hwnd);
-	HDC memDC = ::CreateCompatibleDC(hdc);
-	HBITMAP memBitmap = ::CreateCompatibleBitmap(hdc, desktopRect.right - desktopRect.left, desktopRect.bottom - desktopRect.top);
-	::SelectObject(memDC, memBitmap);
-	Graphics g(memDC);
-	g.SetSmoothingMode(SmoothingModeAntiAlias);
-	g.SetTextRenderingHint(TextRenderingHintAntiAlias);
-	g.Clear(clearColor);
-
-	RectF rc((REAL)labelSettings.borderSize, (REAL)labelSettings.borderSize, 0.0, 0.0);
-	SizeF stringSize, layoutSize((REAL)desktopRect.right - desktopRect.left - 2 * labelSettings.borderSize, (REAL)desktopRect.bottom - desktopRect.top - 2 * labelSettings.borderSize);
-	StringFormat format;
-	format.SetAlignment(StringAlignmentCenter);
-	g.MeasureString(text, (INT)wcslen(text), fontPlus, layoutSize, &format, &stringSize);
-	rc.Width = stringSize.Width;
-	rc.Height = stringSize.Height;
-	SIZE wndSize = {2 * labelSettings.borderSize + (LONG)rc.Width, 2 * labelSettings.borderSize + (LONG)rc.Height};
-	SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, wndSize.cx, wndSize.cy, SWP_NOMOVE | SWP_NOACTIVATE);
-
-	SolidBrush bgBrush(Color::Color(0xaf007cfe));
-	g.FillRectangle(&bgBrush, rc);
-	SolidBrush textBrushPlus(Color(0xaf303030));
-	g.DrawString(text, (int)wcslen(text), fontPlus, rc, &format, &textBrushPlus);
-	SolidBrush brushPlus(Color::Color(0xaffefefe));
-	rc.X += 2;
-	rc.Y += 2;
-	g.DrawString(text, (INT)wcslen(text), fontPlus, rc, &format, &brushPlus);
-
-	POINT ptSrc = {0, 0};
-	POINT ptDst = {rt.left, rt.top};
-	BLENDFUNCTION blendFunction;
-	blendFunction.AlphaFormat = AC_SRC_ALPHA;
-	blendFunction.BlendFlags = 0;
-	blendFunction.BlendOp = AC_SRC_OVER;
-	blendFunction.SourceConstantAlpha = 255;
-	::UpdateLayeredWindow(hwnd, hdc, &ptDst, &wndSize, memDC, &ptSrc, 0, &blendFunction, 2);
-	::DeleteDC(memDC);
-	::DeleteObject(memBitmap);
-	ReleaseDC(hwnd, hdc);
-}
-*/
 
 void updateLayeredWindow(HWND hwnd)
 {
@@ -581,62 +497,6 @@ HWND CreateToolTip(HWND hDlg, int toolID, LPWSTR pszText)
 
 	return hwndTip;
 }
-void writeSettingInt(LPCTSTR lpSection, LPCTSTR lpKey, DWORD dwValue)
-{
-	WCHAR tmp[256];
-	swprintf(tmp, 256, L"%d", dwValue);
-	WritePrivateProfileString(L"KeyCast", lpKey, tmp, iniFile);
-}
-void saveSettings()
-{
-	// DebugPrint("void saveSettings()\n");
-	WritePrivateProfileStruct(L"KeyCast", L"textFont", (LPVOID)&labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
-	writeSettingInt(L"KeyCast", L"textColor", labelSettings.textColor);
-	writeSettingInt(L"KeyCast", L"textOpacity", labelSettings.textOpacity);
-
-	writeSettingInt(L"KeyCast", L"borderSize", labelSettings.borderSize);
-	writeSettingInt(L"KeyCast", L"borderColor", labelSettings.borderColor);
-	writeSettingInt(L"KeyCast", L"borderOpacity", labelSettings.borderOpacity);
-
-	writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
-	writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
-
-	writeSettingInt(L"KeyCast", L"cornerSize", labelSettings.cornerSize);
-
-	writeSettingInt(L"KeyCast", L"keyStrokeDelay", labelSettings.keyStrokeDelay);
-	writeSettingInt(L"KeyCast", L"lingerTime", labelSettings.lingerTime);
-	writeSettingInt(L"KeyCast", L"fadeDuration", labelSettings.fadeDuration);
-	writeSettingInt(L"KeyCast", L"maximumLines", maximumLines);
-
-	writeSettingInt(L"KeyCast", L"alignment", alignment);
-	writeSettingInt(L"KeyCast", L"offsetX", deskOrigin.x);
-	writeSettingInt(L"KeyCast", L"offsetY", deskOrigin.y);
-
-	writeSettingInt(L"KeyCast", L"tcModifiers", tcModifiers);
-	writeSettingInt(L"KeyCast", L"tcKey", tcKey);
-	WritePrivateProfileString(L"KeyCast", L"branding", branding, iniFile);
-
-	// writeSettingInt(L"labelSpacing", labelSpacing);
-	//  writeSettingInt(L"visibleShift", visibleShift);
-	//  writeSettingInt(L"visibleModifier", visibleModifier);
-	//  writeSettingInt(L"mouseCapturing", mouseCapturing);
-	//  writeSettingInt(L"mouseCapturingMod", mouseCapturingMod);
-	//  writeSettingInt(L"keyAutoRepeat", keyAutoRepeat);
-	//  writeSettingInt(L"mergeMouseActions", mergeMouseActions);
-	// writeSettingInt(L"onlyCommandKeys", onlyCommandKeys);
-	// writeSettingInt(L"draggableLabel", draggableLabel);
-	/*
-	if (draggableLabel)
-	{
-		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
-	}
-	else
-	{
-	SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
-	}
-	*/
-	// WritePrivateProfileString(L"KeyCast", L"comboChars", comboChars, iniFile);
-}
 
 void fixDeskOrigin()
 {
@@ -649,70 +509,6 @@ void fixDeskOrigin()
 		deskOrigin.y = desktopRect.bottom;
 	}
 }
-
-/*
-void loadSettings()
-{
-	// DebugPrint("void loadSettings()\n");
-	labelSettings.keyStrokeDelay = GetPrivateProfileInt(L"KeyCast", L"keyStrokeDelay", 500, iniFile);
-	labelSettings.lingerTime = GetPrivateProfileInt(L"KeyCast", L"lingerTime", 3600, iniFile);
-	labelSettings.fadeDuration = GetPrivateProfileInt(L"KeyCast", L"fadeDuration", 200, iniFile);
-	labelSettings.bgColor = GetPrivateProfileInt(L"KeyCast", L"bgColor", RGB(75, 75, 75), iniFile);
-	labelSettings.textColor = GetPrivateProfileInt(L"KeyCast", L"textColor", RGB(255, 255, 255), iniFile);
-	labelSettings.bgOpacity = GetPrivateProfileInt(L"KeyCast", L"bgOpacity", 0, iniFile);
-	labelSettings.textOpacity = GetPrivateProfileInt(L"KeyCast", L"textOpacity", 255, iniFile);
-	labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCast", L"borderOpacity", 0, iniFile);
-	labelSettings.borderColor = GetPrivateProfileInt(L"KeyCast", L"borderColor", RGB(0, 128, 255), iniFile);
-	// DebugPrint("borderSize = %d\n", labelSettings.borderSize);
-	labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 0, iniFile);
-	// DebugPrint("borderSize = %d\n", labelSettings.borderSize);
-	labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCast", L"cornerSize", 0, iniFile);
-	// labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
-	maximumLines = GetPrivateProfileInt(L"KeyCast", L"maximumLines", 10, iniFile);
-	if (maximumLines == 0)
-	{
-		maximumLines = 1;
-	}
-	deskOrigin.x = GetPrivateProfileInt(L"KeyCast", L"offsetX", 2, iniFile);
-	deskOrigin.y = GetPrivateProfileInt(L"KeyCast", L"offsetY", 2, iniFile);
-	MONITORINFO mi;
-	GetWorkAreaByOrigin(deskOrigin, mi);
-	CopyMemory(&desktopRect, &mi.rcWork, sizeof(RECT));
-	MoveWindow(hMainWnd, desktopRect.left, desktopRect.top, 1, 1, TRUE);
-	fixDeskOrigin();
-	// visibleShift = GetPrivateProfileInt(L"KeyCast", L"visibleShift", 0, iniFile);
-	// visibleModifier = GetPrivateProfileInt(L"KeyCast", L"visibleModifier", 1, iniFile);
-	// mouseCapturing = GetPrivateProfileInt(L"KeyCast", L"mouseCapturing", 1, iniFile);
-	//  mouseCapturingMod = GetPrivateProfileInt(L"KeyCast", L"mouseCapturingMod", 0, iniFile);
-	// keyAutoRepeat = GetPrivateProfileInt(L"KeyCast", L"keyAutoRepeat", 1, iniFile);
-	// mergeMouseActions = GetPrivateProfileInt(L"KeyCast", L"mergeMouseActions", 1, iniFile);
-	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 0, iniFile);
-	// onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
-	// draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
-	// if (draggableLabel)
-	// {
-		// SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
-	// }
-	// else
-	// {
-SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
-// }
-tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
-tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
-GetPrivateProfileString(L"KeyCast", L"branding", L"Exit", branding, BRANDINGMAX, iniFile);
-// GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
-memset(&labelSettings.textFont, 0, sizeof(labelSettings.textFont));
-labelSettings.textFont.lfCharSet = DEFAULT_CHARSET;
-labelSettings.textFont.lfHeight = -16;
-labelSettings.textFont.lfPitchAndFamily = DEFAULT_PITCH;
-labelSettings.textFont.lfWeight = FW_REGULAR;
-labelSettings.textFont.lfOutPrecision = OUT_DEFAULT_PRECIS;
-labelSettings.textFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-labelSettings.textFont.lfQuality = ANTIALIASED_QUALITY;
-wcscpy_s(labelSettings.textFont.lfFaceName, LF_FACESIZE, TEXT("Tahoma"));
-GetPrivateProfileStruct(L"KeyCast", L"textFont", &labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
-}
-*/
 
 void renderSettingsData(HWND hwndDlg)
 {
