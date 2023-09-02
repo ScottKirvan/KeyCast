@@ -1267,6 +1267,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 		return 0;
 	}
 
+	// this is our main window, which we paste our keystrokes into
 	hMainWnd = CreateWindowEx(
 		WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_NOACTIVATE,
 		szWinName,
