@@ -223,7 +223,9 @@ void updateLabel(int i)
 			rc.X = (REAL)labelSettings.borderSize;
 		}
 		rc.Height = (rc.Height < labelSettings.cornerSize) ? labelSettings.cornerSize : rc.Height;
-		int bgAlpha = (int)(r * labelSettings.bgOpacity), textAlpha = (int)(r * labelSettings.textOpacity), borderAlpha = (int)(r * labelSettings.borderOpacity);
+		int textAlpha = (int)(r * labelSettings.textOpacity);
+		int borderAlpha = labelSettings.borderSize ? (int)(r * labelSettings.borderOpacity) : 0;
+		int bgAlpha = (int)(r * labelSettings.bgOpacity);
 		Pen penPlus(Color::Color(BR(borderAlpha, labelSettings.borderColor)), labelSettings.borderSize + 0.0f);
 		SolidBrush brushPlus(Color::Color(BR(bgAlpha, labelSettings.bgColor)));
 		drawLabelFrame(gCanvas, &penPlus, &brushPlus, rc, (REAL)labelSettings.cornerSize);

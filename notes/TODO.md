@@ -29,7 +29,7 @@ TODO
 - [ ] replace the branding text stuff with a user definable image that can be loaded -- a bit more useful for the streamers, I think.
 - [ ] change the ini file color formats to:  textColor=(R=1.0,G=0.0,B=0.5,A=1.0)
 - [ ] make the font human readable in the ini
-
+- [x] if borderSize is zero, set the opacity to 0 - currently you still see it and it artifacts
 
 In Progress
 -----------
