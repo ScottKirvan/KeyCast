@@ -20,8 +20,6 @@ using namespace Gdiplus;
 CTimer showTimer;
 CTimer previewTimer;
 
-WCHAR iniFile[MAX_PATH];
-
 #define MAXCHARS 4096
 WCHAR textBuffer[MAXCHARS];
 LPCWSTR textBufferEnd = textBuffer + MAXCHARS;
@@ -53,7 +51,17 @@ struct LabelSettings
 	int cornerSize;
 };
 */
-LabelSettings labelSettings, previewLabelSettings;
+// extern WCHAR *iniFile;
+// extern LabelSettings labelSettings, previewLabelSettings;
+// extern DWORD maximumLines;
+// extern DWORD labelCount;
+// extern POINT deskOrigin;
+// extern RECT desktopRect;
+// extern int alignment;
+// extern UINT tcModifiers; // Toggle Capture - Alt
+// extern UINT tcKey;		 // 0x42 is 'b'  // Toggle Capture - b
+// #define BRANDINGMAX 256
+// extern WCHAR *branding;
 
 // DWORD labelSpacing;				// Label Spacing
 // BOOL visibleShift = TRUE; // // Shift as Modifier Key
@@ -62,23 +70,14 @@ LabelSettings labelSettings, previewLabelSettings;
 //  BOOL mouseCapturingMod = FALSE; // Mouse Only With Modifier
 // BOOL keyAutoRepeat = TRUE;		// Hold down to repeat
 // BOOL mergeMouseActions = TRUE; // Detect Click / DblClick
-int alignment = 0; // 0: left, 1: right -- todo add center
 //  BOOL onlyCommandKeys = FALSE; // Only Command Keys
 BOOL positioning = FALSE;
 // BOOL draggableLabel = FALSE; // Draggable Label
-UINT tcModifiers = MOD_ALT; // Toggle Capture - Alt
-UINT tcKey = 0x42;			// 0x42 is 'b'  // Toggle Capture - b
 Color clearColor(0, 127, 127, 127);
-#define BRANDINGMAX 256
-WCHAR branding[BRANDINGMAX]; // Branding
 // WCHAR comboChars[4];
-POINT deskOrigin;
 
 #define MAXLABELS 60
 KeyLabel keyLabels[MAXLABELS];
-DWORD maximumLines = 10;
-DWORD labelCount = 0;
-RECT desktopRect;
 SIZE canvasSize;
 POINT canvasOrigin;
 
@@ -651,6 +650,7 @@ void fixDeskOrigin()
 	}
 }
 
+/*
 void loadSettings()
 {
 	// DebugPrint("void loadSettings()\n");
@@ -689,33 +689,31 @@ void loadSettings()
 	alignment = GetPrivateProfileInt(L"KeyCast", L"alignment", 0, iniFile);
 	// onlyCommandKeys = GetPrivateProfileInt(L"KeyCast", L"onlyCommandKeys", 0, iniFile);
 	// draggableLabel = GetPrivateProfileInt(L"KeyCast", L"draggableLabel", 0, iniFile);
-	/*
-	if (draggableLabel)
-	{
-		SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
-	}
-	else
-	{
-		*/
-	SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
-	/*
-	}
-	*/
-	tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
-	tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
-	GetPrivateProfileString(L"KeyCast", L"branding", L"Exit", branding, BRANDINGMAX, iniFile);
-	// GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
-	memset(&labelSettings.textFont, 0, sizeof(labelSettings.textFont));
-	labelSettings.textFont.lfCharSet = DEFAULT_CHARSET;
-	labelSettings.textFont.lfHeight = -16;
-	labelSettings.textFont.lfPitchAndFamily = DEFAULT_PITCH;
-	labelSettings.textFont.lfWeight = FW_REGULAR;
-	labelSettings.textFont.lfOutPrecision = OUT_DEFAULT_PRECIS;
-	labelSettings.textFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
-	labelSettings.textFont.lfQuality = ANTIALIASED_QUALITY;
-	wcscpy_s(labelSettings.textFont.lfFaceName, LF_FACESIZE, TEXT("Tahoma"));
-	GetPrivateProfileStruct(L"KeyCast", L"textFont", &labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
+	// if (draggableLabel)
+	// {
+		// SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) & ~WS_EX_TRANSPARENT);
+	// }
+	// else
+	// {
+SetWindowLong(hMainWnd, GWL_EXSTYLE, GetWindowLong(hMainWnd, GWL_EXSTYLE) | WS_EX_TRANSPARENT);
+// }
+tcModifiers = GetPrivateProfileInt(L"KeyCast", L"tcModifiers", MOD_ALT, iniFile);
+tcKey = GetPrivateProfileInt(L"KeyCast", L"tcKey", 0x42, iniFile);
+GetPrivateProfileString(L"KeyCast", L"branding", L"Exit", branding, BRANDINGMAX, iniFile);
+// GetPrivateProfileString(L"KeyCast", L"comboChars", L"[+", comboChars, 4, iniFile);
+memset(&labelSettings.textFont, 0, sizeof(labelSettings.textFont));
+labelSettings.textFont.lfCharSet = DEFAULT_CHARSET;
+labelSettings.textFont.lfHeight = -16;
+labelSettings.textFont.lfPitchAndFamily = DEFAULT_PITCH;
+labelSettings.textFont.lfWeight = FW_REGULAR;
+labelSettings.textFont.lfOutPrecision = OUT_DEFAULT_PRECIS;
+labelSettings.textFont.lfClipPrecision = CLIP_DEFAULT_PRECIS;
+labelSettings.textFont.lfQuality = ANTIALIASED_QUALITY;
+wcscpy_s(labelSettings.textFont.lfFaceName, LF_FACESIZE, TEXT("Tahoma"));
+GetPrivateProfileStruct(L"KeyCast", L"textFont", &labelSettings.textFont, sizeof(labelSettings.textFont), iniFile);
 }
+*/
+
 void renderSettingsData(HWND hwndDlg)
 {
 	// DebugPrint("void renderSettingsData(HWND hwndDlg)\n");
@@ -1011,7 +1009,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 			}
 			prepareLabels();
 			saveSettings();
-			loadSettings();
+			loadSettings(hMainWnd);
 		case IDCANCEL:
 			EndDialog(hwndDlg, wParam);
 			previewTimer.Stop();
@@ -1123,7 +1121,7 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 			break;
 		case MENU_RESTORE:
 			DeleteFile(iniFile);
-			loadSettings();
+			loadSettings(hMainWnd);
 			updateCanvasSize(deskOrigin);
 			createCanvas();
 			prepareLabels();
@@ -1292,7 +1290,7 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 		return 0;
 	}
 
-	loadSettings();
+	loadSettings(hMainWnd);
 	saveSettings(); // save this right back out, in case one doesn't exist - this way we have a default ini file
 
 	updateCanvasSize(deskOrigin); // you call this to set the default origin
