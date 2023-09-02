@@ -14,153 +14,153 @@ struct Key
 };
 
 struct Key specialKeys[] = {
-	{0x08, L"Backspace "}, // back
-	{0x09, L"Tab "},
-	{0x0C, L"Clear "},
-	{0x0D, L"Enter "}, // enter
-	{0x10, L"Shift "},
-	{0x11, L"Control "},
-	{0x12, L"Menu "},
-	{0x13, L"Pause "},
-	{0x14, L"CapsLock "},
-	{0x15, L"Kana "},
-	{0x17, L"Junja "},
-	{0x18, L"Final "},
-	{0x19, L"Kanji "},
-	{0x1B, L"Esc "}, // escape
-	{0x1C, L"Convert "},
-	{0x1D, L"Nonconvert "},
-	{0x1E, L"Accept "},
-	{0x1F, L"ModeChange "},
-	{0x20, L"Space  "}, // space
-	{0x21, L"PageUp "},
-	{0x22, L"PageDown "},
-	{0x23, L"End "},
-	{0x24, L"Home "},
-	{0x25, L"Left Arrow "},	 // left
-	{0x26, L"Up Arrow "},	 // up
-	{0x27, L"Right Arrow "}, // right
-	{0x28, L"Down Arrow "},	 // down
-	{0x29, L"Select "},
-	{0x2A, L"Print "},
-	{0x2B, L"Execute "},
-	{0x2C, L"Snapshot "},
-	{0x2D, L"Insert "},
-	{0x2E, L"Delete "},
-	{0x2F, L"Help "},
-	{0x5B, L"Win "},
-	{0x5C, L"Win "},
-	{0x5D, L"Apps "},
-	{0x5F, L"Sleep "},
-	{0x6A, L"Multiply "},
-	{0x6B, L"Add "},
-	{0x6C, L"Separator "},
-	{0x6D, L"Subtract "},
-	{0x6E, L"Decimal "},
-	{0x6F, L"Divide "},
-	{0x70, L"F1 "},
-	{0x71, L"F2 "},
-	{0x72, L"F3 "},
-	{0x73, L"F4 "},
-	{0x74, L"F5 "},
-	{0x75, L"F6 "},
-	{0x76, L"F7 "},
-	{0x77, L"F8 "},
-	{0x78, L"F9 "},
-	{0x79, L"F10 "},
-	{0x7A, L"F11 "},
-	{0x7B, L"F12 "},
-	{0x7C, L"F13 "},
-	{0x7D, L"F14 "},
-	{0x7E, L"F15 "},
-	{0x7F, L"F16 "},
-	{0x80, L"F17 "},
-	{0x81, L"F18 "},
-	{0x82, L"F19 "},
-	{0x83, L"F20 "},
-	{0x84, L"F21 "},
-	{0x85, L"F22 "},
-	{0x86, L"F23 "},
-	{0x87, L"F24 "},
-	{0x90, L"NumLock "},
-	{0x91, L"ScrollLock "},
-	{0xA0, L"Shift "},
-	{0xA1, L"Shift "},
-	{0xA2, L"Ctrl "},
-	{0xA3, L"Ctrl "},
-	{0xA4, L"Alt "},
-	{0xA5, L"Alt "},
-	{0xA6, L"BrowserBack "},
-	{0xA7, L"BrowserForward "},
-	{0xA8, L"BrowserRefresh "},
-	{0xA9, L"BrowserStop "},
-	{0xAA, L"BrowserSearch "},
-	{0xAB, L"BrowserFavorites "},
-	{0xAC, L"BrowserHome "},
-	{0xAD, L"VolumeMute "},
-	{0xAE, L"VolumeDown "},
-	{0xAF, L"VolumeUp "},
-	{0xB0, L"MEDIA_NEXT_TRACK "},
-	{0xB1, L"MEDIA_PREV_TRACK "},
-	{0xB2, L"MEDIA_STOP "},
-	{0xB3, L"MEDIA_PLAY_PAUSE "},
-	{0xB4, L"LAUNCH_MAIL "},
-	{0xB5, L"LAUNCH_MEDIA_SELECT "},
-	{0xB6, L"LAUNCH_APP1 "},
-	{0xB7, L"LAUNCH_APP2 "},
-	{0xBA, L"OEM_1 "},
-	{0xBB, L"OEM_PLUS "},
-	{0xBC, L"OEM_COMMA "},
-	{0xBD, L"OEM_MINUS "},
-	{0xBE, L"OEM_PERIOD "},
-	{0xBF, L"OEM_2 "},
-	{0xC0, L"OEM_3 "},
-	{0xDB, L"OEM_4 "},
-	{0xDC, L"OEM_5 "},
-	{0xDD, L"OEM_6 "},
-	{0xDE, L"OEM_7 "},
-	{0xDF, L"OEM_8 "},
-	{0xE2, L"OEM_102 "},
-	{0xE5, L"PROCESSKEY "},
-	{0xE7, L"PACKET "},
-	{0xF6, L"ATTN "},
-	{0xF7, L"CRSEL "},
-	{0xF8, L"EXSEL "},
-	{0xF9, L"EREOF "},
-	{0xFA, L"PLAY "},
-	{0xFB, L"ZOOM "},
-	{0xFC, L"NONAME "},
-	{0xFD, L"PA1 "},
-	{0xFE, L"OEM_CLEAR "}};
+	{0x08, L"Backspace"}, // back
+	{0x09, L"Tab"},
+	{0x0C, L"Clear"},
+	{0x0D, L"Enter"}, // enter
+	{0x10, L"Shift"},
+	{0x11, L"Control"},
+	{0x12, L"Menu"},
+	{0x13, L"Pause"},
+	{0x14, L"CapsLock"},
+	{0x15, L"Kana"},
+	{0x17, L"Junja"},
+	{0x18, L"Final"},
+	{0x19, L"Kanji"},
+	{0x1B, L"Esc"}, // escape
+	{0x1C, L"Convert"},
+	{0x1D, L"Nonconvert"},
+	{0x1E, L"Accept"},
+	{0x1F, L"ModeChange"},
+	{0x20, L"Space "}, // space
+	{0x21, L"PageUp"},
+	{0x22, L"PageDown"},
+	{0x23, L"End"},
+	{0x24, L"Home"},
+	{0x25, L"Left Arrow"},	// left
+	{0x26, L"Up Arrow"},	// up
+	{0x27, L"Right Arrow"}, // right
+	{0x28, L"Down Arrow"},	// down
+	{0x29, L"Select"},
+	{0x2A, L"Print"},
+	{0x2B, L"Execute"},
+	{0x2C, L"Snapshot"},
+	{0x2D, L"Insert"},
+	{0x2E, L"Delete"},
+	{0x2F, L"Help"},
+	{0x5B, L"Win"},
+	{0x5C, L"Win"},
+	{0x5D, L"Apps"},
+	{0x5F, L"Sleep"},
+	{0x6A, L"Multiply"},
+	{0x6B, L"Add"},
+	{0x6C, L"Separator"},
+	{0x6D, L"Subtract"},
+	{0x6E, L"Decimal"},
+	{0x6F, L"Divide"},
+	{0x70, L"F1"},
+	{0x71, L"F2"},
+	{0x72, L"F3"},
+	{0x73, L"F4"},
+	{0x74, L"F5"},
+	{0x75, L"F6"},
+	{0x76, L"F7"},
+	{0x77, L"F8"},
+	{0x78, L"F9"},
+	{0x79, L"F10"},
+	{0x7A, L"F11"},
+	{0x7B, L"F12"},
+	{0x7C, L"F13"},
+	{0x7D, L"F14"},
+	{0x7E, L"F15"},
+	{0x7F, L"F16"},
+	{0x80, L"F17"},
+	{0x81, L"F18"},
+	{0x82, L"F19"},
+	{0x83, L"F20"},
+	{0x84, L"F21"},
+	{0x85, L"F22"},
+	{0x86, L"F23"},
+	{0x87, L"F24"},
+	{0x90, L"NumLock"},
+	{0x91, L"ScrollLock"},
+	{0xA0, L"Shift"},
+	{0xA1, L"Shift"},
+	{0xA2, L"Ctrl"},
+	{0xA3, L"Ctrl"},
+	{0xA4, L"Alt"},
+	{0xA5, L"Alt"},
+	{0xA6, L"BrowserBack"},
+	{0xA7, L"BrowserForward"},
+	{0xA8, L"BrowserRefresh"},
+	{0xA9, L"BrowserStop"},
+	{0xAA, L"BrowserSearch"},
+	{0xAB, L"BrowserFavorites"},
+	{0xAC, L"BrowserHome"},
+	{0xAD, L"VolumeMute"},
+	{0xAE, L"VolumeDown"},
+	{0xAF, L"VolumeUp"},
+	{0xB0, L"MEDIA_NEXT_TRACK"},
+	{0xB1, L"MEDIA_PREV_TRACK"},
+	{0xB2, L"MEDIA_STOP"},
+	{0xB3, L"MEDIA_PLAY_PAUSE"},
+	{0xB4, L"LAUNCH_MAIL"},
+	{0xB5, L"LAUNCH_MEDIA_SELECT"},
+	{0xB6, L"LAUNCH_APP1"},
+	{0xB7, L"LAUNCH_APP2"},
+	{0xBA, L"OEM_1"},
+	{0xBB, L"OEM_PLUS"},
+	{0xBC, L"OEM_COMMA"},
+	{0xBD, L"OEM_MINUS"},
+	{0xBE, L"OEM_PERIOD"},
+	{0xBF, L"OEM_2"},
+	{0xC0, L"OEM_3"},
+	{0xDB, L"OEM_4"},
+	{0xDC, L"OEM_5"},
+	{0xDD, L"OEM_6"},
+	{0xDE, L"OEM_7"},
+	{0xDF, L"OEM_8"},
+	{0xE2, L"OEM_102"},
+	{0xE5, L"PROCESSKEY"},
+	{0xE7, L"PACKET"},
+	{0xF6, L"ATTN"},
+	{0xF7, L"CRSEL"},
+	{0xF8, L"EXSEL"},
+	{0xF9, L"EREOF"},
+	{0xFA, L"PLAY"},
+	{0xFB, L"ZOOM"},
+	{0xFC, L"NONAME"},
+	{0xFD, L"PA1"},
+	{0xFE, L"OEM_CLEAR"}};
 
 size_t nSpecialKeys = sizeof(specialKeys) / sizeof(Key);
 
 LPCWSTR mouseActions[] = {
-	L"MouseMove ",
-	L"LButtonDown ",
-	L"LButtonUp ",
-	L"LButtonDBLCLK ",
-	L"RButtonDown ",
-	L"RButtonUp ",
-	L"RButtonDBLCLK ",
-	L"MButtonDown ",
-	L"MButtonUp ",
-	L"MButtonDBLCLK ",
-	L"MouseWheel ",
-	L"XButtonDown ",
-	L"XButtonUp ",
-	L"XButtonDBLCLK ",
-	L"MouseHWheel "};
+	L"MouseMove",
+	L"LButtonDown",
+	L"LButtonUp",
+	L"LButtonDBLCLK",
+	L"RButtonDown",
+	L"RButtonUp",
+	L"RButtonDBLCLK",
+	L"MButtonDown",
+	L"MButtonUp",
+	L"MButtonDBLCLK",
+	L"MouseWheel",
+	L"XButtonDown",
+	L"XButtonUp",
+	L"XButtonDBLCLK",
+	L"MouseHWheel"};
 
 LPCWSTR mouseClicks[] = {
-	L"Left Mouse ",
-	L"Right Mouse ",
-	L"Middle Mouse "};
+	L"Left Mouse",
+	L"Right Mouse",
+	L"Middle Mouse"};
 
 LPCWSTR mouseDblClicks[] = {
-	L"LDblClick ",
-	L"RDblClick ",
-	L"MDblClick "};
+	L"LDblClick",
+	L"RDblClick",
+	L"MDblClick"};
 
 size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
@@ -385,7 +385,7 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 			else if (!wcsstr(modifierkey, ck))
 			{
 				wcscpy_s(tmp, 64, modifierkey);
-				swprintf(modifierkey, 64, L"%s+ %s", tmp, ck);
+				swprintf(modifierkey, 64, L"%s + %s", tmp, ck);
 			}
 			// this is the case where there's a modifier key pressed but doesn't modify any other key
 			// in screencast keys, this shows up next to the mouse image, not in the text list
@@ -426,7 +426,7 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 				if (mod)
 				{
 					fin = 1;
-					swprintf(tmp, 64, L"%s+ %s", modifierkey, theKey);
+					swprintf(tmp, 64, L"%s + %s", modifierkey, theKey);
 					// addBracket(tmp);
 					theKey = tmp;
 				}
@@ -562,7 +562,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 				if (modifierkey[0] != '\0')
 				{
 					modifierUsed = TRUE;
-					swprintf(tmp, 64, L"%s+ %s", modifierkey, c);
+					swprintf(tmp, 64, L"%s + %s", modifierkey, c);
 					// addBracket(tmp);
 					showText(tmp, behavior);
 				}
