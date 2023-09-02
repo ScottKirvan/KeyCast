@@ -18,6 +18,9 @@ using namespace Gdiplus;
 #include "../../res/resource.h"
 #include "timer.h"
 #include "DebugPrint.h"
+#include "stamp.h"
+#include "keycastSettings.h"
+
 CTimer showTimer;
 CTimer previewTimer;
 
@@ -41,6 +44,7 @@ struct KeyLabel
 	}
 };
 
+/*
 struct LabelSettings
 {
 	DWORD keyStrokeDelay;
@@ -52,6 +56,7 @@ struct LabelSettings
 	int borderSize;
 	int cornerSize;
 };
+*/
 LabelSettings labelSettings, previewLabelSettings;
 
 // DWORD labelSpacing;				// Label Spacing
@@ -88,7 +93,7 @@ WCHAR *szWinName = L"KeyCast";
 HWND hMainWnd;
 HWND hDlgSettings;
 RECT settingsDlgRect;
-HWND hWndStamp;
+// HWND hWndStamp;
 HINSTANCE hInstance;
 Graphics *gCanvas = NULL;
 Font *fontPlus = NULL;
@@ -101,6 +106,7 @@ Font *fontPlus = NULL;
 
 void showText(LPCWSTR text, int behavior);
 
+/*
 void stamp(HWND hwnd, LPCWSTR text)
 {
 	// DebugPrint("void stamp(HWND hwnd, LPCWSTR text)\n");
@@ -146,6 +152,7 @@ void stamp(HWND hwnd, LPCWSTR text)
 	::DeleteObject(memBitmap);
 	ReleaseDC(hwnd, hdc);
 }
+*/
 
 void updateLayeredWindow(HWND hwnd)
 {
@@ -474,7 +481,7 @@ void prepareLabels()
 		}
 	}
 
-	stamp(hWndStamp, branding);
+	stamp(branding, desktopRect);
 }
 
 void GetWorkAreaByOrigin(const POINT &pt, MONITORINFO &mi)
@@ -1018,6 +1025,7 @@ BOOL CALLBACK SettingsWndProc(HWND hwndDlg, UINT msg, WPARAM wParam, LPARAM lPar
 	return FALSE;
 }
 
+/*
 LRESULT CALLBACK DraggableWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	static POINT s_last_mouse;
@@ -1057,6 +1065,7 @@ LRESULT CALLBACK DraggableWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 	}
 	return 0;
 }
+*/
 
 LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -1176,6 +1185,7 @@ LRESULT CALLBACK WindowFunc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPara
 	}
 	return 0;
 }
+
 ATOM MyRegisterClassEx(HINSTANCE hInst, LPCWSTR className, WNDPROC wndProc)
 {
 	WNDCLASSEX wcl;
@@ -1194,6 +1204,7 @@ ATOM MyRegisterClassEx(HINSTANCE hInst, LPCWSTR className, WNDPROC wndProc)
 
 	return RegisterClassEx(&wcl);
 }
+
 void CreateMiniDump(LPEXCEPTION_POINTERS lpExceptionInfo)
 {
 	// Open a file
@@ -1290,12 +1301,17 @@ int WINAPI WinMain(HINSTANCE hThisInst, HINSTANCE hPrevInst,
 
 	updateCanvasSize(deskOrigin); // you call this to set the default origin
 	hDlgSettings = CreateDialog(hThisInst, MAKEINTRESOURCE(IDD_SK_DLGSETTINGS), NULL, (DLGPROC)SettingsWndProc);
+
+	InitStamp(hThisInst);
+
+	/*
 	MyRegisterClassEx(hThisInst, L"STAMP", DraggableWndProc);
 	hWndStamp = CreateWindowEx(
 		WS_EX_LAYERED | WS_EX_NOACTIVATE,
 		L"STAMP", L"STAMP", WS_VISIBLE | WS_POPUP,
 		0, 0, 1, 1,
 		NULL, NULL, hThisInst, NULL);
+	*/
 
 	if (!RegisterHotKey(NULL, 1, tcModifiers | MOD_NOREPEAT, tcKey))
 	{

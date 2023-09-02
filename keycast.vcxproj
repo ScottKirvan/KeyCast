@@ -28,6 +28,7 @@
     <ClInclude Include="res\resource.h" />
     <ClInclude Include="src\keycast\DebugPrint.h" />
     <ClInclude Include="src\keycast\keycast.h" />
+    <ClInclude Include="src\keycast\keycastSettings.h" />
     <ClInclude Include="src\keycast\keylog.h" />
     <ClInclude Include="src\keycast\MyStaticVar.h" />
     <ClInclude Include="src\keycast\stamp.h" />
