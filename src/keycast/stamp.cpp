@@ -137,6 +137,8 @@ LRESULT CALLBACK DraggableWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     case WM_LBUTTONDBLCLK:
         // this launches the config dlg - I don't want to do this
         // SendMessage(hMainWnd, WM_COMMAND, MENU_CONFIG, 0);
+        // instead, I'll use this to exit the program
+        ExitProcess(0);
         break;
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);
