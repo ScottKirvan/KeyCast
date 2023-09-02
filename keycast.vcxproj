@@ -22,6 +22,7 @@
     <ClCompile Include="src\keycast\DebugPrint.cpp" />
     <ClCompile Include="src\keycast\keycast.cpp" />
     <ClCompile Include="src\keycast\keylog.cpp" />
+    <ClCompile Include="src\keycast\stamp.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\resource.h" />
@@ -29,6 +30,7 @@
     <ClInclude Include="src\keycast\keycast.h" />
     <ClInclude Include="src\keycast\keylog.h" />
     <ClInclude Include="src\keycast\MyStaticVar.h" />
+    <ClInclude Include="src\keycast\stamp.h" />
     <ClInclude Include="src\keycast\timer.h" />
   </ItemGroup>
   <ItemGroup>
