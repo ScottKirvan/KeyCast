@@ -13,7 +13,7 @@ using namespace Gdiplus;
 #include "../../res/resource.h"
 #include "timer.h"
 #include "DebugPrint.h"
-#include "stamp.h"
+#include "FloatingLogo.h"
 #include "keycastSettings.h"
 #include "keylog.h"
 
@@ -240,7 +240,7 @@ bool outOfLine(LPCWSTR text)
  * behavior 1: create a new label with text
  * behavior 2: replace last label with text
  */
-void showText(LPCWSTR text, int behavior = 0)
+void showText(LPCWSTR text, int behavior)
 {
 	SetWindowPos(hMainWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
 	DWORD newLen = (DWORD)wcslen(text);

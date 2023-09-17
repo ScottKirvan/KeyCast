@@ -4,6 +4,8 @@
 #include "keylog.h"
 #include <stdio.h>
 #include "MyStaticVar.h"
+#include "DebugPrint.h"
+#include "keycast.h"
 
 struct Key
 {
@@ -173,9 +175,9 @@ size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 extern BOOL positioning;
 extern WCHAR deferredLabel[64];
 HHOOK kbdhook, moshook;
-void showText(LPCWSTR text, int behavior = 0);
-void fadeLastLabel(BOOL weither);
-void positionOrigin(int action, POINT &pt);
+// void showText(LPCWSTR text, int behavior = 0);
+// void fadeLastLabel(BOOL weither);
+// void positionOrigin(int action, POINT &pt);
 
 LPCWSTR GetSymbolFromVK(UINT vk, UINT sc, BOOL mod, HKL hklLayout)
 {
@@ -392,10 +394,12 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 				// addBracket(c);
 				if (lastvk == k.vkCode)
 				{
+					DebugPrint("hold modkey?\n");
 					showText(c, 2);
 				}
 				else
 				{
+					DebugPrint("modkey\n");
 					showText(c, 1);
 				}
 			}
@@ -429,6 +433,7 @@ LRESULT CALLBACK LLKeyboardProc(int nCode, WPARAM wp, LPARAM lp)
 				}
 				// if (fin || !onlyCommandKeys)
 				// {
+				DebugPrint("key\n");
 				showText(theKey, fin);
 				// }
 			}
@@ -561,18 +566,21 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 					modifierUsed = TRUE;
 					swprintf(tmp, 64, L"%s + %s", modifierkey, c);
 					// addBracket(tmp);
+					DebugPrint("mod-mouse\n");
 					showText(tmp, behavior);
 				}
 				else if (GetKeyState(VK_SHIFT) < 0)
 				{
 					swprintf(tmp, 64, L"Shift +%s", c);
 					// addBracket(tmp);
+					DebugPrint("\n");
 					showText(tmp, behavior);
 				}
 				else /* if (!mouseCapturingMod) */
 				{
 					swprintf(tmp, 64, L"%s", c);
 					// addBracket(tmp);
+					DebugPrint("mouse\n");
 					showText(tmp, behavior);
 				}
 

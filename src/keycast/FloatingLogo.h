@@ -1,10 +1,10 @@
 
-#ifndef _STAMP_H_
-#define _STAMP_H_
+#ifndef _FLOATINGLOGO_H_
+#define _FLOATINGLOGO_H_
 
 #include <windows.h>
 
 void InitStamp(HINSTANCE hThisInst);
 void stamp(LPCWSTR text, RECT desktopRect);
 
-#endif // _STAMP_H_
+#endif // _FLOATINGLOGO_H_

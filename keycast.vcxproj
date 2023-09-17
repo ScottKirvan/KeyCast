@@ -24,7 +24,7 @@
     <ClCompile Include="src\keycast\keycastSettings.cpp" />
     <ClCompile Include="src\keycast\keylog.cpp" />
     <ClCompile Include="src\keycast\MyStaticVar.cpp" />
-    <ClCompile Include="src\keycast\stamp.cpp" />
+    <ClCompile Include="src\keycast\FloatingLogo.cpp" />
     <ClCompile Include="src\keycast\timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -34,7 +34,7 @@
     <ClInclude Include="src\keycast\keycastSettings.h" />
     <ClInclude Include="src\keycast\keylog.h" />
     <ClInclude Include="src\keycast\MyStaticVar.h" />
-    <ClInclude Include="src\keycast\stamp.h" />
+    <ClInclude Include="src\keycast\FloatingLogo.h" />
     <ClInclude Include="src\keycast\timer.h" />
   </ItemGroup>
   <ItemGroup>

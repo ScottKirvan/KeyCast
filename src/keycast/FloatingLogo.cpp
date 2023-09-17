@@ -1,6 +1,6 @@
 // "Stamp" is the branding.  It's a movable subwindow that floats above the rest of the window.
 // #include <windows.h>
-#include "stamp.h"
+#include "FloatingLogo.h"
 #include <gdiplus.h>
 #include "keycastSettings.h"
 using namespace Gdiplus;
