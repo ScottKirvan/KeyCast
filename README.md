@@ -2,7 +2,7 @@
 
 <div align="center">
 
-  <img src="notes/images/logo.jpg" alt="logo" width="200" height="auto" />
+  <img src="assets/media/logo.jpg" alt="logo" width="200" height="auto" />
     <h1><a href="https://github.com/ScottKirvan/KeyCast">ScottKirvan/KeyCast</a></h1>
   <h3>Nulla nobis dicta iste minus dolor repellendus aspernatur atque</h3>
   
