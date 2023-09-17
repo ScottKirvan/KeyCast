@@ -244,6 +244,12 @@ void showText(LPCWSTR text, int behavior)
 	SetWindowPos(hMainWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE | SWP_NOACTIVATE);
 	DWORD newLen = (DWORD)wcslen(text);
 
+	/*
+	this does the line break, but I need to figure out how to count dup keystrokes and display the number
+	if (behavior == 0)
+		behavior = 1; // sk
+	*/
+
 	DWORD i;
 	if (behavior == 2)
 	{
