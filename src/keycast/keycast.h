@@ -9,6 +9,8 @@ using namespace Gdiplus;
 
 extern Color clearColor;
 extern Font *fontPlus;
+extern BOOL positioning;
+extern WCHAR deferredLabel[64];
 
 void GetWorkAreaByOrigin(const POINT &pt, MONITORINFO &mi);
 void fixDeskOrigin();

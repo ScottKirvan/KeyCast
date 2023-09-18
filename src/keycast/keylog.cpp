@@ -164,16 +164,8 @@ LPCWSTR mouseDblClicks[] = {
 
 size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
-// extern BOOL visibleShift;
-// extern BOOL visibleModifier;
-//  extern BOOL mouseCapturing;
-// extern BOOL mouseCapturingMod;
-// extern BOOL keyAutoRepeat;
-// extern BOOL mergeMouseActions;
-// extern BOOL onlyCommandKeys;
-// extern WCHAR comboChars[3];
-extern BOOL positioning;
-extern WCHAR deferredLabel[64];
+// extern BOOL positioning;
+// extern WCHAR deferredLabel[64];
 HHOOK kbdhook, moshook;
 // void showText(LPCWSTR text, int behavior = 0);
 // void fadeLastLabel(BOOL weither);

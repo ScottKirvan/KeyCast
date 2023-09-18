@@ -6,11 +6,6 @@
 using namespace Gdiplus;
 #include "keycast.h"
 
-// #define SHOWTIMER_INTERVAL 40
-
-// extern struct LabelSettings labelSettings;
-// extern CTimer showTimer;
-
 HWND hWndStamp;
 LRESULT CALLBACK DraggableWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
