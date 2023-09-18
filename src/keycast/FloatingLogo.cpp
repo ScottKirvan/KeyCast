@@ -4,12 +4,11 @@
 #include <gdiplus.h>
 #include "keycastSettings.h"
 using namespace Gdiplus;
+#include "keycast.h"
 
 // #define SHOWTIMER_INTERVAL 40
 
-extern Color clearColor;
-extern struct LabelSettings labelSettings;
-extern Font *fontPlus;
+// extern struct LabelSettings labelSettings;
 // extern CTimer showTimer;
 
 HWND hWndStamp;
