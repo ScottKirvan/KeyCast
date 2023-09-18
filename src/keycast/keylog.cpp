@@ -164,12 +164,7 @@ LPCWSTR mouseDblClicks[] = {
 
 size_t nMouseActions = sizeof(mouseActions) / sizeof(LPCWSTR);
 
-// extern BOOL positioning;
-// extern WCHAR deferredLabel[64];
 HHOOK kbdhook, moshook;
-// void showText(LPCWSTR text, int behavior = 0);
-// void fadeLastLabel(BOOL weither);
-// void positionOrigin(int action, POINT &pt);
 
 LPCWSTR GetSymbolFromVK(UINT vk, UINT sc, BOOL mod, HKL hklLayout)
 {
