@@ -42,8 +42,8 @@ void saveSettings()
     writeSettingInt(L"KeyCast", L"maximumLines", maximumLines);
 
     writeSettingInt(L"KeyCast", L"alignment", alignment);
-    writeSettingInt(L"KeyCast", L"offsetX", deskOrigin.x);
-    writeSettingInt(L"KeyCast", L"offsetY", deskOrigin.y);
+    writeSettingInt(L"KeyCast", L"windowHeight", deskOrigin.x);
+    writeSettingInt(L"KeyCast", L"windowWidth", deskOrigin.y);
 
     writeSettingInt(L"KeyCast", L"tcModifiers", tcModifiers);
     writeSettingInt(L"KeyCast", L"tcKey", tcKey);
@@ -72,8 +72,8 @@ void loadSettings(HWND hMainWnd)
     {
         maximumLines = 1;
     }
-    deskOrigin.x = GetPrivateProfileInt(L"KeyCast", L"offsetX", 2, iniFile);
-    deskOrigin.y = GetPrivateProfileInt(L"KeyCast", L"offsetY", 2, iniFile);
+    deskOrigin.x = GetPrivateProfileInt(L"KeyCast", L"windowHeight", 2, iniFile);
+    deskOrigin.y = GetPrivateProfileInt(L"KeyCast", L"windowWidth", 2, iniFile);
     MONITORINFO mi;
     GetWorkAreaByOrigin(deskOrigin, mi);
     CopyMemory(&desktopRect, &mi.rcWork, sizeof(RECT));
