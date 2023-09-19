@@ -560,7 +560,7 @@ LRESULT CALLBACK LLMouseProc(int nCode, WPARAM wp, LPARAM lp)
 				{
 					swprintf(tmp, 64, L"Shift +%s", c);
 					// addBracket(tmp);
-					DebugPrint("\n");
+					DebugPrint("WHAT IS THIS?\n");
 					showText(tmp, behavior);
 				}
 				else /* if (!mouseCapturingMod) */
