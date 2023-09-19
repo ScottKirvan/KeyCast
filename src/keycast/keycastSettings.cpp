@@ -30,11 +30,10 @@ void saveSettings()
     writeSettingInt(L"KeyCast", L"borderSize", labelSettings.borderSize);
     writeSettingInt(L"KeyCast", L"borderColor", labelSettings.borderColor);
     writeSettingInt(L"KeyCast", L"borderOpacity", labelSettings.borderOpacity);
+    writeSettingInt(L"KeyCast", L"borderRadius", labelSettings.borderRadius);
 
     writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
     writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
-
-    writeSettingInt(L"KeyCast", L"borderRadius", labelSettings.borderRadius);
 
     writeSettingInt(L"KeyCast", L"keyStrokeDelay", labelSettings.keyStrokeDelay);
     writeSettingInt(L"KeyCast", L"lingerTime", labelSettings.lingerTime);
@@ -60,12 +59,12 @@ void loadSettings(HWND hMainWnd)
     labelSettings.textColor = GetPrivateProfileInt(L"KeyCast", L"textColor", RGB(255, 255, 255), iniFile);
     labelSettings.bgOpacity = GetPrivateProfileInt(L"KeyCast", L"bgOpacity", 0, iniFile);
     labelSettings.textOpacity = GetPrivateProfileInt(L"KeyCast", L"textOpacity", 255, iniFile);
-    labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCast", L"borderOpacity", 0, iniFile);
-    labelSettings.borderColor = GetPrivateProfileInt(L"KeyCast", L"borderColor", RGB(0, 128, 255), iniFile);
+    labelSettings.borderOpacity = GetPrivateProfileInt(L"KeyCast", L"borderOpacity", 255, iniFile);
+    labelSettings.borderColor = GetPrivateProfileInt(L"KeyCast", L"borderColor", RGB(255, 255, 255), iniFile);
     // DebugPrint("borderSize = %d\n", labelSettings.borderSize);
-    labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 0, iniFile);
+    labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 3, iniFile);
+    labelSettings.borderRadius = GetPrivateProfileInt(L"KeyCast", L"borderRadius", 10, iniFile);
     // DebugPrint("borderSize = %d\n", labelSettings.borderSize);
-    labelSettings.borderRadius = GetPrivateProfileInt(L"KeyCast", L"borderRadius", 0, iniFile);
     // labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
     maximumLines = GetPrivateProfileInt(L"KeyCast", L"maximumLines", 10, iniFile);
     if (maximumLines == 0)
