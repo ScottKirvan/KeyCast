@@ -85,16 +85,16 @@ void eraseLabel(int i)
 	gCanvas->Clear(clearColor);
 	gCanvas->ResetClip();
 }
-void drawLabelFrame(Graphics *g, const Pen *pen, const Brush *brush, RectF &rc, REAL cornerSize)
+void drawLabelFrame(Graphics *g, const Pen *pen, const Brush *brush, RectF &rc, REAL borderRadius)
 {
-	if (cornerSize > 0)
+	if (borderRadius > 0)
 	{
 		GraphicsPath path;
-		REAL dx = rc.Width - cornerSize, dy = rc.Height - cornerSize;
-		path.AddArc(rc.X, rc.Y, cornerSize, cornerSize, 170, 90);
-		path.AddArc(rc.X + dx, rc.Y, cornerSize, cornerSize, 270, 90);
-		path.AddArc(rc.X + dx, rc.Y + dy, cornerSize, cornerSize, 0, 90);
-		path.AddArc(rc.X, rc.Y + dy, cornerSize, cornerSize, 90, 90);
+		REAL dx = rc.Width - borderRadius, dy = rc.Height - borderRadius;
+		path.AddArc(rc.X, rc.Y, borderRadius, borderRadius, 170, 90);
+		path.AddArc(rc.X + dx, rc.Y, borderRadius, borderRadius, 270, 90);
+		path.AddArc(rc.X + dx, rc.Y + dy, borderRadius, borderRadius, 0, 90);
+		path.AddArc(rc.X, rc.Y + dy, borderRadius, borderRadius, 90, 90);
 		path.CloseFigure();
 
 		g->DrawPath(pen, &path);
@@ -120,7 +120,7 @@ void updateLabel(int i)
 		r = (r > 1.0f) ? 1.0f : r;
 		PointF origin(rc.X, rc.Y);
 		gCanvas->MeasureString(keyLabels[i].text, keyLabels[i].length, fontPlus, origin, &rc);
-		rc.Width = (rc.Width < labelSettings.cornerSize) ? labelSettings.cornerSize : rc.Width;
+		rc.Width = (rc.Width < labelSettings.borderRadius) ? labelSettings.borderRadius : rc.Width;
 		if (alignment)
 		{
 			rc.X = canvasSize.cx - rc.Width - labelSettings.borderSize;
@@ -129,13 +129,13 @@ void updateLabel(int i)
 		{
 			rc.X = (REAL)labelSettings.borderSize;
 		}
-		rc.Height = (rc.Height < labelSettings.cornerSize) ? labelSettings.cornerSize : rc.Height;
+		rc.Height = (rc.Height < labelSettings.borderRadius) ? labelSettings.borderRadius : rc.Height;
 		int textAlpha = (int)(r * labelSettings.textOpacity);
 		int borderAlpha = labelSettings.borderSize ? (int)(r * labelSettings.borderOpacity) : 0;
 		int bgAlpha = (int)(r * labelSettings.bgOpacity);
 		Pen penPlus(Color::Color(BR(borderAlpha, labelSettings.borderColor)), labelSettings.borderSize + 0.0f);
 		SolidBrush brushPlus(Color::Color(BR(bgAlpha, labelSettings.bgColor)));
-		drawLabelFrame(gCanvas, &penPlus, &brushPlus, rc, (REAL)labelSettings.cornerSize);
+		drawLabelFrame(gCanvas, &penPlus, &brushPlus, rc, (REAL)labelSettings.borderRadius);
 		SolidBrush textBrushPlus(Color(BR(textAlpha, labelSettings.textColor)));
 		gCanvas->DrawString(keyLabels[i].text,
 							keyLabels[i].length,
@@ -230,7 +230,7 @@ bool outOfLine(LPCWSTR text)
 	RectF box;
 	PointF origin(0, 0);
 	gCanvas->MeasureString(keyLabels[labelCount - 1].text, keyLabels[labelCount - 1].length, fontPlus, origin, &box);
-	int cx = (int)box.Width + 2 * labelSettings.cornerSize + labelSettings.borderSize * 2;
+	int cx = (int)box.Width + 2 * labelSettings.borderRadius + labelSettings.borderSize * 2;
 	bool out = cx >= canvasSize.cx;
 	return out;
 }
@@ -533,8 +533,8 @@ void renderSettingsData(HWND hwndDlg)
 	SetDlgItemText(hwndDlg, IDC_BORDEROPACITY, tmp);
 	swprintf(tmp, 256, L"%d", previewLabelSettings.borderSize);
 	SetDlgItemText(hwndDlg, IDC_BORDERSIZE, tmp);
-	swprintf(tmp, 256, L"%d", previewLabelSettings.cornerSize);
-	SetDlgItemText(hwndDlg, IDC_CORNERSIZE, tmp);
+	swprintf(tmp, 256, L"%d", previewLabelSettings.borderRadius);
+	SetDlgItemText(hwndDlg, IDC_BORDERRADIUS, tmp);
 
 	// swprintf(tmp, 256, L"%d", labelSpacing);
 	// SetDlgItemText(hwndDlg, IDC_LABELSPACING, tmp);
@@ -584,8 +584,8 @@ void getLabelSettings(HWND hwndDlg, LabelSettings &lblSettings)
 	lblSettings.borderOpacity = min(lblSettings.borderOpacity, 255);
 	GetDlgItemText(hwndDlg, IDC_BORDERSIZE, tmp, 256);
 	lblSettings.borderSize = _wtoi(tmp);
-	GetDlgItemText(hwndDlg, IDC_CORNERSIZE, tmp, 256);
-	lblSettings.cornerSize = _wtoi(tmp);
+	GetDlgItemText(hwndDlg, IDC_BORDERRADIUS, tmp, 256);
+	lblSettings.borderRadius = _wtoi(tmp);
 }
 // DWORD previewTime = 0;
 #define PREVIEWTIMER_INTERVAL 5
@@ -645,7 +645,7 @@ static void previewLabel()
 	int bgAlpha = (int)(r * previewLabelSettings.bgOpacity), textAlpha = (int)(r * previewLabelSettings.textOpacity), borderAlpha = (int)(r * previewLabelSettings.borderOpacity);
 	Pen penPlus(Color::Color(BR(borderAlpha, previewLabelSettings.borderColor)), previewLabelSettings.borderSize + 0.0f);
 	SolidBrush brushPlus(Color::Color(BR(bgAlpha, previewLabelSettings.bgColor)));
-	drawLabelFrame(&g, &penPlus, &brushPlus, rc, (REAL)previewLabelSettings.cornerSize);
+	drawLabelFrame(&g, &penPlus, &brushPlus, rc, (REAL)previewLabelSettings.borderRadius);
 	SolidBrush textBrushPlus(Color(BR(textAlpha, previewLabelSettings.textColor)));
 	g.DrawString(text, (INT)wcslen(text), &font, origin, &textBrushPlus);
 	BitBlt(hdc, rt.left, rt.top, rtWidth, rtHeight, memDC, 0, 0, SRCCOPY);

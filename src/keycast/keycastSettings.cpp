@@ -34,7 +34,7 @@ void saveSettings()
     writeSettingInt(L"KeyCast", L"bgColor", labelSettings.bgColor);
     writeSettingInt(L"KeyCast", L"bgOpacity", labelSettings.bgOpacity);
 
-    writeSettingInt(L"KeyCast", L"cornerSize", labelSettings.cornerSize);
+    writeSettingInt(L"KeyCast", L"borderRadius", labelSettings.borderRadius);
 
     writeSettingInt(L"KeyCast", L"keyStrokeDelay", labelSettings.keyStrokeDelay);
     writeSettingInt(L"KeyCast", L"lingerTime", labelSettings.lingerTime);
@@ -65,7 +65,7 @@ void loadSettings(HWND hMainWnd)
     // DebugPrint("borderSize = %d\n", labelSettings.borderSize);
     labelSettings.borderSize = GetPrivateProfileInt(L"KeyCast", L"borderSize", 0, iniFile);
     // DebugPrint("borderSize = %d\n", labelSettings.borderSize);
-    labelSettings.cornerSize = GetPrivateProfileInt(L"KeyCast", L"cornerSize", 0, iniFile);
+    labelSettings.borderRadius = GetPrivateProfileInt(L"KeyCast", L"borderRadius", 0, iniFile);
     // labelSpacing = GetPrivateProfileInt(L"KeyCast", L"labelSpacing", 1, iniFile);
     maximumLines = GetPrivateProfileInt(L"KeyCast", L"maximumLines", 10, iniFile);
     if (maximumLines == 0)

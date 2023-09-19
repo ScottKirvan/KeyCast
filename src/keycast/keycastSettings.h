@@ -14,7 +14,7 @@ struct LabelSettings
     COLORREF bgColor, textColor, borderColor;
     DWORD bgOpacity, textOpacity, borderOpacity;
     int borderSize;
-    int cornerSize;
+    int borderRadius;
 };
 
 extern WCHAR iniFile[MAX_PATH];
